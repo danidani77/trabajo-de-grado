@@ -21,11 +21,12 @@ const GROUP_EN1 = {
       thumb:"assets/thumbs/en1_v1.jpg",
       isLegacy:true,
       viewers:[
-        {kind:"pdf", label:"Edición 1", file:"assets/pdfs/en1_v1.pdf"},
-        {kind:"pdf", label:"Edición 2", file:"assets/pdfs/en1_v2.pdf"},
-        {kind:"pdf", label:"Edición 3", file:"assets/pdfs/en1_v3.pdf"},
+        {kind:"html", label:"Edición 1", file:"assets/htmls/en1_manual_ed1.html"},
+        {kind:"html", label:"Edición 2", file:"assets/htmls/en1_manual_ed2.html"},
+        {kind:"html", label:"Edición 3", file:"assets/htmls/en1_manual_ed3.html"},
+        {kind:"html", label:"Edición 4", file:"assets/htmls/en1_manual_ed4.html"},
       ],
-      facts:[["Herramienta","Editor visual de MailUp"],["Formato","Imágenes apiladas por bloque"],["Ediciones de referencia","3"]],
+      facts:[["Herramienta","Editor visual de MailUp"],["Formato","HTML de envío, editado por bloques"],["Ediciones de referencia","4"]],
     },
     {
       id:"en1-sistema", num:"02", title:"Sistema HTML propio",

@@ -18,7 +18,7 @@ const GROUP_EN1 = {
     {
       id:"en1-manual", num:"01", title:"Ediciones manuales, editadas en MailUp",
       tag:"Editor visual de MailUp",
-      thumb:"assets/thumbs/en1_v1.jpg",
+      thumb:"assets/thumbs/en1_manual.jpg",
       isLegacy:true,
       viewers:[
         {kind:"html", label:"Edición 1", file:"assets/htmls/en1_manual_ed1.html"},
@@ -76,7 +76,7 @@ const GROUP_KIT = {
     {
       id:"kit-agosto", num:"03", title:"Agosto — edición Henkia",
       tag:"Ya bajo la nueva identidad de marca",
-      thumb:null,
+      thumb:"assets/thumbs/kit_agosto.jpg",
       viewers:[{kind:"live-note", label:"Sitio institucional — captura pendiente de autorización.", url:null}],
       facts:[["Marca","Henkia (transición desde ARUS)"],["Novedad","Contadores en vivo, video-manifiesto"],["Contexto","Coincide con el cambio de marca de la compañía"]],
     },

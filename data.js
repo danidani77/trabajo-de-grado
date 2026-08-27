@@ -62,7 +62,7 @@ const GROUP_KIT = {
     {
       id:"kit-julio", num:"02", title:"Julio — edición 03",
       tag:"Tres universos gráficos, animaciones, integraciones reales",
-      thumb:null,
+      thumb:"assets/thumbs/kit_julio.png",
       compareWith:"kit-marzo",
       viewers:[{kind:"iframe-external", label:"Abrir sitio en vivo", url:"https://kitdelliderjulio.netlify.app/"}],
       facts:[["Concepto","Tres universos gráficos unidos por un sistema común"],["Integraciones","Humand, SharePoint"],["Animaciones","Título letra por letra, transición de logos"]],
@@ -209,7 +209,7 @@ const GROUP_ONBOARDING = {
     {
       id:"onboarding-web", num:"02", title:"Guía interactiva nacional",
       tag:"15 pasos navegables · Accesos por categoría",
-      thumb:null,
+      thumb:"assets/thumbs/onboarding_web.png",
       compareWith:"onboarding-ppt",
       viewers:[{kind:"iframe-external", label:"Abrir sitio en vivo", url:"https://onboardingnacionalarus.netlify.app/"}],
       facts:[["Pasos","15 navegables"],["Accesos","Perfil, Nómina, Interno, Compras, Bienestar, Equipos"],["Alcance","Nacional"]],
@@ -231,7 +231,7 @@ const GROUP_MAILINGS = {
     {
       id:"mailings-citaciones", num:"01", title:"Editor de citaciones",
       tag:"Autogestión por área · HTML autocontenido",
-      thumb:null,
+      thumb:"assets/thumbs/mailings_citaciones.jpg",
       viewers:[{kind:"html", label:"Abrir editor", file:"assets/htmls/henkia_editor_citaciones.html"}],
       facts:[["Objetivo","Generar tarjetas de citación a reuniones y comités, on-brand, sin pasar por diseño"],["Uso","Título, descripción, lugar, contacto y logo del área o programa"],["Formato","HTML autocontenido (~6.9MB, fuentes e imágenes embebidas)"]],
     },

@@ -229,11 +229,11 @@ const GROUP_MAILINGS = {
   desc:"Comunicaciones puntuales de uso casi diario — mailings de campañas, ecards de celebración y portadas de piezas internas — migradas al mismo flujo de trabajo con código propio.",
   pieces:[
     {
-      id:"mailings-pendiente", num:"01", title:"Contenido en preparación",
-      tag:"Esta sección se completará próximamente",
+      id:"mailings-citaciones", num:"01", title:"Editor de citaciones",
+      tag:"Autogestión por área · HTML autocontenido",
       thumb:null,
-      viewers:[{kind:"live-note", label:"Esta sección está en preparación. El material se incorporará próximamente.", url:null}],
-      facts:[["Estado","Pendiente de material"],["Piezas previstas","Mailings, ecards, portadas"],["Actualización","Próxima revisión del archivo"]],
+      viewers:[{kind:"html", label:"Abrir editor", file:"assets/htmls/henkia_editor_citaciones.html"}],
+      facts:[["Objetivo","Generar tarjetas de citación a reuniones y comités, on-brand, sin pasar por diseño"],["Uso","Título, descripción, lugar, contacto y logo del área o programa"],["Formato","HTML autocontenido (~6.9MB, fuentes e imágenes embebidas)"]],
     },
   ]
 };

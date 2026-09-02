@@ -48,7 +48,7 @@ function totalPiezas(){
 function renderHome(){
   const total = totalPiezas();
   mainEl.innerHTML = `
-    <section class="home-hero wrap">
+    <section class="home-hero brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Trabajo de grado · Institución Universitaria Pascual Bravo</div>
       <h1>Diseño gráfico potenciado con inteligencia artificial en Henkia.</h1>
       <p class="hh-dek">Un registro del trabajo realizado durante mi práctica profesional: usar Claude para llevar procesos de comunicación de la compañía un paso más allá de lo que sus herramientas originales permitían.</p>

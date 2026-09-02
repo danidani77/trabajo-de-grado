@@ -3,7 +3,7 @@
 // ============================================================
 function renderObras(){
   mainEl.innerHTML = `
-    <section class="obras-head wrap">
+    <section class="obras-head brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Registro completo</div>
       <h1 style="font-family:var(--display); font-weight:700; font-size:clamp(30px,4.5vw,48px); line-height:1.08; max-width:820px;">Catálogo de piezas.</h1>
       <p class="hh-body">Cada pieza incluye su documento o sitio de origen y, cuando aplica, el resultado final — abiertos directamente aquí, no solo en captura.</p>

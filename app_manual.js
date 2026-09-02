@@ -3,7 +3,7 @@
 // ============================================================
 function renderManual(){
   mainEl.innerHTML = `
-    <section class="manual-head wrap">
+    <section class="manual-head brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Documentación técnica · Para quien continúe este trabajo</div>
       <h1 style="font-family:var(--display); font-weight:700; font-size:clamp(28px,4.2vw,46px); max-width:760px; line-height:1.1;">Notas de proceso, para quien siga con esto.</h1>
       <p class="hh-body">Aquí dejo lo que aprendí en el camino: los principios que seguí, los prompts que funcionaron tal cual, y los problemas técnicos que ya resolví, por si le sirven a quien continúe con estas piezas más adelante.</p>

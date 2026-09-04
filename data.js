@@ -31,7 +31,7 @@ const GROUP_EN1 = {
     {
       id:"en1-sistema", num:"02", title:"Sistema HTML propio",
       tag:"Código propio · Compatible Gmail, Outlook y Apple Mail",
-      thumb:"assets/thumbs/3enUno_BITACORA.jpg",
+      thumb:"assets/thumbs/en1_sistema.jpg",
       compareWith:"en1-manual",
       viewers: EN1_VARIANTS.map(v => ({kind:"html", label:v.label, file:v.file})),
       variants: EN1_VARIANTS,
@@ -62,7 +62,7 @@ const GROUP_KIT = {
     {
       id:"kit-julio", num:"02", title:"Julio — edición 03",
       tag:"Tres universos gráficos, animaciones, integraciones reales",
-      thumb:"assets/thumbs/kit_julio.png",
+      thumb:"assets/thumbs/kit_julio.jpg",
       compareWith:"kit-marzo",
       viewers:[{kind:"iframe-external", label:"Abrir sitio en vivo", url:"https://kitdelliderjulio.netlify.app/"}],
       facts:[["Concepto","Tres universos gráficos unidos por un sistema común"],["Integraciones","Humand, SharePoint"],["Animaciones","Título letra por letra, transición de logos"]],
@@ -91,7 +91,7 @@ const GROUP_BUK = {
     {
       id:"buk-salud", num:"01", title:"Salud Integral",
       tag:"Autocuidado · Bienestar físico, emocional y financiero",
-      thumb:"assets/thumbs/salud-integral_15.jpg",
+      thumb:"assets/thumbs/buk_salud.jpg",
       compareThumbBefore:"assets/thumbs/buk_salud.jpg",
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_salud.pdf"},
@@ -102,7 +102,7 @@ const GROUP_BUK = {
     {
       id:"buk-mosaico", num:"02", title:"Mosaico",
       tag:"Mosaico Integrador y Mosaico Administrativo",
-      thumb:"assets/thumbs/Henkia_Mosaico_1.jpg",
+      thumb:"assets/thumbs/buk_mosaico.jpg",
       compareThumbBefore:"assets/thumbs/buk_mosaico.jpg",
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_mosaico.pdf"},
@@ -113,7 +113,7 @@ const GROUP_BUK = {
     {
       id:"buk-convivencia", num:"03", title:"Comité de Convivencia y COPASST",
       tag:"Reporte de acoso · Seguridad y salud en el trabajo",
-      thumb:"assets/thumbs/comite_convivencia_henkia_9.jpg",
+      thumb:"assets/thumbs/buk_convivencia.jpg",
       compareThumbBefore:"assets/thumbs/buk_convivencia.jpg",
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_convivencia.pdf"},
@@ -124,7 +124,7 @@ const GROUP_BUK = {
     {
       id:"buk-servicios", num:"04", title:"Servicios Administrativos",
       tag:"Transportes, viáticos, papelería, archivo",
-      thumb:"assets/thumbs/Servicios_Administrativos_-_Henkia_5.jpg",
+      thumb:"assets/thumbs/buk_servicios.jpg",
       compareThumbBefore:"assets/thumbs/buk_servicios.jpg",
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_servicios.pdf"},
@@ -135,7 +135,7 @@ const GROUP_BUK = {
     {
       id:"buk-compensacion", num:"05", title:"Mi Compensación",
       tag:"Kiosko, Pentaho, cesantías, incapacidades, dotación",
-      thumb:"assets/thumbs/mi-compensacion-henkia_6.jpg",
+      thumb:"assets/thumbs/buk_compensacion.jpg",
       compareThumbBefore:"assets/thumbs/buk_compensacion.jpg",
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_compensacion.pdf"},
@@ -146,7 +146,7 @@ const GROUP_BUK = {
     {
       id:"buk-estrategia", num:"06", title:"Estrategia y Cultura",
       tag:"Posicionamiento, cadena de valor, atributos de cultura",
-      thumb:"assets/thumbs/Henkia_Estrategia_y_Cultura_18.jpg",
+      thumb:"assets/thumbs/buk_estrategia.jpg",
       compareThumbBefore:"assets/thumbs/buk_estrategia.jpg",
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_estrategia.pdf"},
@@ -209,7 +209,7 @@ const GROUP_ONBOARDING = {
     {
       id:"onboarding-web", num:"02", title:"Guía interactiva nacional",
       tag:"15 pasos navegables · Accesos por categoría",
-      thumb:"assets/thumbs/onboarding_web.png",
+      thumb:"assets/thumbs/onboarding_web.jpg",
       compareWith:"onboarding-ppt",
       viewers:[{kind:"iframe-external", label:"Abrir sitio en vivo", url:"https://onboardingnacionalarus.netlify.app/"}],
       facts:[["Pasos","15 navegables"],["Accesos","Perfil, Nómina, Interno, Compras, Bienestar, Equipos"],["Alcance","Nacional"]],

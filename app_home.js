@@ -17,6 +17,9 @@ function navigate(view){
   if(view==='manual') renderManual();
   if(view==='autor') renderAutor();
   requestAnimationFrame(initReveal);
+  mainEl.classList.remove('view-anim');
+  void mainEl.offsetWidth;
+  mainEl.classList.add('view-anim');
 }
 
 document.getElementById('sbNav').addEventListener('click', (e)=>{
@@ -26,16 +29,44 @@ document.getElementById('sbNav').addEventListener('click', (e)=>{
 
 function initReveal(){
   const els = document.querySelectorAll('.reveal:not(.is-visible), .reveal-scale:not(.is-visible)');
-  if(!els.length) return;
+  if(els.length){
+    if(typeof IntersectionObserver === 'undefined'){
+      els.forEach(el=>el.classList.add('is-visible'));
+    } else {
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+      }, {threshold:.15, rootMargin:"0px 0px -60px 0px"});
+      els.forEach(el=>io.observe(el));
+      setTimeout(()=>{ els.forEach(el=>el.classList.add('is-visible')); }, 2500);
+    }
+  }
+  initCounters();
+}
+
+function initCounters(){
+  const counters = document.querySelectorAll('[data-count]:not(.is-counted)');
+  if(!counters.length) return;
+  const animateCounter = (el)=>{
+    el.classList.add('is-counted');
+    const target = parseInt(el.dataset.count, 10);
+    const duration = 900;
+    const start = performance.now();
+    const tick = (now)=>{
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target);
+      if(p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
   if(typeof IntersectionObserver === 'undefined'){
-    els.forEach(el=>el.classList.add('is-visible'));
+    counters.forEach(el=>animateCounter(el));
     return;
   }
   const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
-  }, {threshold:.15, rootMargin:"0px 0px -60px 0px"});
-  els.forEach(el=>io.observe(el));
-  setTimeout(()=>{ els.forEach(el=>el.classList.add('is-visible')); }, 2500);
+    entries.forEach(e=>{ if(e.isIntersecting){ animateCounter(e.target); io.unobserve(e.target); } });
+  }, {threshold:.4});
+  counters.forEach(el=>io.observe(el));
 }
 
 function totalPiezas(){
@@ -60,9 +91,9 @@ function renderHome(){
 
       <div class="colofon">
         <div class="colofon-grid">
-          <div><div class="cf-n">6</div><div class="cf-l">Frentes de trabajo</div></div>
+          <div><div class="cf-n"><span data-count="${CATALOG.length}">0</span></div><div class="cf-l">Frentes de trabajo</div></div>
           <div><div class="cf-n">ARUS → Henkia</div><div class="cf-l">Marzo – Agosto 2026</div></div>
-          <div><div class="cf-n">6 meses</div><div class="cf-l">Duración de la práctica</div></div>
+          <div><div class="cf-n"><span data-count="6">0</span> meses</div><div class="cf-l">Duración de la práctica</div></div>
           <div><div class="cf-n">Pascual Bravo</div><div class="cf-l">Diseño Gráfico</div></div>
         </div>
       </div>

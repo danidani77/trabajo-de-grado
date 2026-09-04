@@ -34,8 +34,8 @@ function renderGroup(g){
       <div class="og-title">${g.title}<span class="og-count">${g.pieces.length} ${g.pieces.length===1?'entrada':'entradas'}</span></div>
       <p class="og-desc">${g.desc}</p>
       <div class="items-grid">
-        ${g.pieces.map(p => `
-          <div class="item-card" data-group="${g.id}" data-piece="${p.id}">
+        ${g.pieces.map((p,i) => `
+          <div class="item-card reveal" style="--i:${i}" data-group="${g.id}" data-piece="${p.id}">
             <div class="ic-thumb ${p.isLegacy ? 'origen' : 'resultado'}">
               ${thumbOrPlaceholder(p)}
               <span class="ic-badge ${p.isLegacy ? 'badge-legado' : 'badge-actual'}">${p.isLegacy ? 'ORIGEN' : 'RESULTADO'}</span>

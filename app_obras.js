@@ -62,9 +62,20 @@ function findPiece(groupId, pieceId){
 
 let dossierActiveViewerIdx = 0;
 
+function findComparePair(g, p){
+  if(p.compareWith){
+    const origen = g.pieces.find(x=>x.id===p.compareWith);
+    if(origen) return {origen, resultado:p};
+  }
+  const resultado = g.pieces.find(x=>x.compareWith===p.id);
+  if(resultado) return {origen:p, resultado};
+  return null;
+}
+
 function openDossier(groupId, pieceId){
   dossierActiveViewerIdx = 0;
   const {g,p} = findPiece(groupId, pieceId);
+  const pair = findComparePair(g,p);
   const overlay = document.getElementById('dossierOverlay');
 
   overlay.innerHTML = `
@@ -77,10 +88,15 @@ function openDossier(groupId, pieceId){
       <div class="dossier-title">${p.title}</div>
       ${p.tag ? `<p class="dossier-summary">${p.tag}</p>` : ''}
 
-      <div class="viewer-tabs" id="viewerTabs">
-        ${p.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length > 28 ? v.label.slice(0,28)+'…' : v.label}</button>`).join('')}
+      ${pair ? `<button class="compare-toggle" id="compareToggle">⇄ Ver origen y resultado en paralelo</button>` : ''}
+
+      <div id="singleView">
+        <div class="viewer-tabs" id="viewerTabs">
+          ${p.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length > 28 ? v.label.slice(0,28)+'…' : v.label}</button>`).join('')}
+        </div>
+        <div id="viewerFrame"></div>
       </div>
-      <div id="viewerFrame"></div>
+      <div id="compareView" style="display:none"></div>
 
       ${p.facts ? `
         <div class="dossier-facts">
@@ -136,6 +152,27 @@ function openDossier(groupId, pieceId){
     });
   });
 
+  const compareToggle = document.getElementById('compareToggle');
+  if(compareToggle && pair){
+    compareToggle.addEventListener('click', ()=>{
+      const single = document.getElementById('singleView');
+      const compare = document.getElementById('compareView');
+      const isComparing = compare.style.display !== 'none';
+      if(isComparing){
+        compare.style.display = 'none';
+        single.style.display = '';
+        compareToggle.textContent = '⇄ Ver origen y resultado en paralelo';
+        compareToggle.classList.remove('is-active');
+      } else {
+        single.style.display = 'none';
+        compare.style.display = '';
+        compareToggle.textContent = '✕ Cerrar comparación';
+        compareToggle.classList.add('is-active');
+        renderCompareView(pair.origen, pair.resultado);
+      }
+    });
+  }
+
   renderViewer(p);
 }
 
@@ -146,47 +183,146 @@ function closeDossier(){
   document.body.style.overflow = '';
 }
 
-function renderViewer(p){
-  const v = p.viewers[dossierActiveViewerIdx];
-  const frame = document.getElementById('viewerFrame');
-  if(!frame) return;
-
+function viewerFrameHTML(v, pdfContainerId){
   if(v.kind === 'pdf'){
-    frame.innerHTML = `
+    return `
       <div class="viewer-frame">
         <div class="viewer-toolbar"><span>ARCHIVO PDF ORIGINAL</span><a href="${resolveAsset(v.file)}" target="_blank">Abrir en pestaña nueva ↗</a></div>
-        <div class="pdf-viewer" id="pdfContainer"><div class="pdf-loading">Cargando documento…</div></div>
+        <div class="pdf-viewer" id="${pdfContainerId}"><div class="pdf-loading">Cargando documento…</div></div>
       </div>
     `;
-    renderPdfPages(v.file, 'pdfContainer');
   } else if(v.kind === 'html'){
-    frame.innerHTML = `
+    return `
       <div class="viewer-frame">
         <div class="viewer-toolbar"><span>MICROSITIO — NAVEGABLE</span><a href="${resolveAsset(v.file)}" target="_blank">Abrir en pestaña nueva ↗</a></div>
         <iframe src="${resolveAsset(v.file)}" title="${v.label}"></iframe>
       </div>
     `;
   } else if(v.kind === 'video'){
-    frame.innerHTML = `
+    return `
       <div class="viewer-frame">
         <div class="viewer-toolbar"><span>VIDEO</span></div>
         <video src="${resolveAsset(v.file)}" controls preload="metadata"></video>
       </div>
     `;
   } else if(v.kind === 'iframe-external'){
-    frame.innerHTML = `
+    return `
       <div class="viewer-frame">
         <div class="viewer-toolbar"><span>SITIO EN PRODUCCIÓN</span><a href="${v.url}" target="_blank">Abrir en pestaña nueva ↗</a></div>
         <iframe src="${v.url}" title="sitio en vivo"></iframe>
       </div>
     `;
   } else if(v.kind === 'live-note' || v.kind === 'live'){
-    frame.innerHTML = `
+    return `
       <div class="viewer-frame" style="min-height:200px; display:flex; align-items:center; justify-content:center; padding:48px;">
         <p style="color:var(--tenue); text-align:center; max-width:480px; font-size:15px;">${v.label}</p>
       </div>
     `;
   }
+  return '';
+}
+
+function renderViewer(p){
+  const v = p.viewers[dossierActiveViewerIdx];
+  const frame = document.getElementById('viewerFrame');
+  if(!frame) return;
+  frame.innerHTML = viewerFrameHTML(v, 'pdfContainer');
+  if(v.kind === 'pdf') renderPdfPages(v.file, 'pdfContainer');
+}
+
+// ============================================================
+// COMPARACIÓN LADO A LADO (origen ↔ resultado)
+// ============================================================
+let compareIdx = {left:0, right:0};
+
+function renderCompareSide(piece, side){
+  const v = piece.viewers[compareIdx[side]];
+  const containerId = side === 'left' ? 'viewerFrameLeft' : 'viewerFrameRight';
+  const pdfId = side === 'left' ? 'pdfContainerLeft' : 'pdfContainerRight';
+  const frame = document.getElementById(containerId);
+  if(!frame) return;
+  frame.innerHTML = viewerFrameHTML(v, pdfId);
+  if(v.kind === 'pdf') renderPdfPages(v.file, pdfId);
+}
+
+function renderCompareView(origen, resultado){
+  const view = document.getElementById('compareView');
+  compareIdx = {left:0, right:0};
+  view.innerHTML = `
+    <div class="sync-indicator" id="syncIndicator"></div>
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-label"><span class="ic-badge badge-legado">ORIGEN</span>${origen.title}</div>
+        ${origen.viewers.length>1 ? `<div class="viewer-tabs compare-tabs" data-side="left">${origen.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length>22?v.label.slice(0,22)+'…':v.label}</button>`).join('')}</div>` : ''}
+        <div id="viewerFrameLeft"></div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label"><span class="ic-badge badge-actual">RESULTADO</span>${resultado.title}</div>
+        ${resultado.viewers.length>1 ? `<div class="viewer-tabs compare-tabs" data-side="right">${resultado.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length>22?v.label.slice(0,22)+'…':v.label}</button>`).join('')}</div>` : ''}
+        <div id="viewerFrameRight"></div>
+      </div>
+    </div>
+  `;
+  view.querySelectorAll('.compare-tabs').forEach(tabGroup=>{
+    const side = tabGroup.dataset.side;
+    tabGroup.querySelectorAll('.vt-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        tabGroup.querySelectorAll('.vt-btn').forEach(b=>b.classList.toggle('is-on', b===btn));
+        compareIdx[side] = parseInt(btn.dataset.idx, 10);
+        renderCompareSide(side==='left' ? origen : resultado, side);
+        maybeWireSync(origen, resultado);
+      });
+    });
+  });
+  renderCompareSide(origen, 'left');
+  renderCompareSide(resultado, 'right');
+  maybeWireSync(origen, resultado);
+}
+
+function maybeWireSync(origen, resultado){
+  const indicator = document.getElementById('syncIndicator');
+  const lv = origen.viewers[compareIdx.left];
+  const rv = resultado.viewers[compareIdx.right];
+  if(lv.kind === 'html' && rv.kind === 'html'){
+    setTimeout(()=>{
+      const leftIframe = document.querySelector('#viewerFrameLeft iframe');
+      const rightIframe = document.querySelector('#viewerFrameRight iframe');
+      if(leftIframe && rightIframe) wireScrollSync(leftIframe, rightIframe);
+    }, 50);
+    if(indicator) indicator.innerHTML = `<span class="dot"></span>Scroll sincronizado entre ambos paneles`;
+  } else {
+    if(indicator) indicator.innerHTML = '';
+  }
+}
+
+let _syncToken = 0;
+function wireScrollSync(leftIframe, rightIframe){
+  const myToken = ++_syncToken;
+  let lastLeft = null, lastRight = null;
+  function loop(){
+    if(myToken !== _syncToken) return;
+    if(!leftIframe.isConnected || !rightIframe.isConnected) return;
+    try{
+      const lw = leftIframe.contentWindow, rw = rightIframe.contentWindow;
+      const lEl = leftIframe.contentDocument.documentElement;
+      const rEl = rightIframe.contentDocument.documentElement;
+      const lMax = lEl.scrollHeight - lw.innerHeight;
+      const rMax = rEl.scrollHeight - rw.innerHeight;
+      if(lMax > 0 && rMax > 0){
+        const ly = lw.scrollY, ry = rw.scrollY;
+        if(lastLeft === null){ lastLeft = ly; lastRight = ry; }
+        if(ly !== lastLeft){
+          rw.scrollTo(0, (ly / lMax) * rMax);
+          lastLeft = ly; lastRight = rw.scrollY;
+        } else if(ry !== lastRight){
+          lw.scrollTo(0, (ry / rMax) * lMax);
+          lastRight = ry; lastLeft = lw.scrollY;
+        }
+      }
+    }catch(e){ return; /* cross-origin: dejar de sincronizar */ }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
 }
 
 function renderViewerCustomFile(file){

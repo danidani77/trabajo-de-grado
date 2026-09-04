@@ -88,15 +88,15 @@ function openDossier(groupId, pieceId){
       <div class="dossier-title">${p.title}</div>
       ${p.tag ? `<p class="dossier-summary">${p.tag}</p>` : ''}
 
-      ${pair ? `<button class="compare-toggle" id="compareToggle">⇄ Ver origen y resultado en paralelo</button>` : ''}
+      ${pair ? `<button class="compare-toggle is-active" id="compareToggle">✕ Ver solo esta pieza</button>` : ''}
 
-      <div id="singleView">
+      <div id="singleView" style="${pair ? 'display:none' : ''}">
         <div class="viewer-tabs" id="viewerTabs">
           ${p.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length > 28 ? v.label.slice(0,28)+'…' : v.label}</button>`).join('')}
         </div>
         <div id="viewerFrame"></div>
       </div>
-      <div id="compareView" style="display:none"></div>
+      <div id="compareView" style="${pair ? '' : 'display:none'}"></div>
 
       ${p.facts ? `
         <div class="dossier-facts">
@@ -152,6 +152,7 @@ function openDossier(groupId, pieceId){
     });
   });
 
+  let singleRendered = false;
   const compareToggle = document.getElementById('compareToggle');
   if(compareToggle && pair){
     compareToggle.addEventListener('click', ()=>{
@@ -161,19 +162,25 @@ function openDossier(groupId, pieceId){
       if(isComparing){
         compare.style.display = 'none';
         single.style.display = '';
-        compareToggle.textContent = '⇄ Ver origen y resultado en paralelo';
+        compareToggle.textContent = '⇄ Ver en paralelo';
         compareToggle.classList.remove('is-active');
+        if(!singleRendered){ renderViewer(p); singleRendered = true; }
       } else {
         single.style.display = 'none';
         compare.style.display = '';
-        compareToggle.textContent = '✕ Cerrar comparación';
+        compareToggle.textContent = '✕ Ver solo esta pieza';
         compareToggle.classList.add('is-active');
         renderCompareView(pair.origen, pair.resultado);
       }
     });
   }
 
-  renderViewer(p);
+  if(pair){
+    renderCompareView(pair.origen, pair.resultado);
+  } else {
+    renderViewer(p);
+    singleRendered = true;
+  }
 }
 
 function closeDossier(){

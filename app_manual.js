@@ -21,7 +21,7 @@ function renderManual(){
 function renderManualSection(sec){
   if(sec.steps){
     return `
-      <section id="sec-${sec.id}" class="man-section reveal">
+      <section id="sec-${sec.id}" class="man-section reveal-scale">
         <h2 class="man-h2">${sec.title}</h2>
         <div class="man-steps">
           ${sec.steps.map((s,i)=>`
@@ -35,7 +35,7 @@ function renderManualSection(sec){
     `;
   }
   return `
-    <section id="sec-${sec.id}" class="man-section reveal">
+    <section id="sec-${sec.id}" class="man-section reveal-scale">
       <h2 class="man-h2">${sec.title}</h2>
       <div class="man-items">
         ${sec.items.map(it => `

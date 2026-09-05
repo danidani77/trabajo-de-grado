@@ -14,6 +14,15 @@ function renderObras(){
   `;
   document.querySelectorAll('.item-card').forEach(card=>{
     card.addEventListener('click', ()=> openDossier(card.dataset.group, card.dataset.piece));
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+      const dx = (e.clientX - (r.left+r.width/2)) / (r.width/2);
+      const dy = (e.clientY - (r.top+r.height/2)) / (r.height/2);
+      card.style.transform = `translate(${dx*8}px, ${dy*8-6}px) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
   });
   requestAnimationFrame(initReveal);
 }
@@ -77,6 +86,8 @@ function openDossier(groupId, pieceId){
   const {g,p} = findPiece(groupId, pieceId);
   const pair = findComparePair(g,p);
   const overlay = document.getElementById('dossierOverlay');
+  const card = document.querySelector(`.item-card[data-group="${groupId}"][data-piece="${pieceId}"]`);
+  if(card) playMorphTransition(card);
 
   overlay.innerHTML = `
     <div class="dossier-topbar">
@@ -88,7 +99,13 @@ function openDossier(groupId, pieceId){
       <div class="dossier-title">${p.title}</div>
       ${p.tag ? `<p class="dossier-summary">${p.tag}</p>` : ''}
 
-      ${pair ? `<button class="compare-toggle is-active" id="compareToggle">✕ Ver solo esta pieza</button>` : ''}
+      ${pair ? `
+        <div class="compare-mode-tabs" id="compareModeTabs">
+          <button class="cmt-btn is-on" data-mode="slider">⇔ Slider</button>
+          <button class="cmt-btn" data-mode="compare">⇄ Paralelo</button>
+          <button class="cmt-btn" data-mode="single">Solo esta pieza</button>
+        </div>
+      ` : ''}
 
       <div id="singleView" style="${pair ? 'display:none' : ''}">
         <div class="viewer-tabs" id="viewerTabs">
@@ -96,7 +113,8 @@ function openDossier(groupId, pieceId){
         </div>
         <div id="viewerFrame"></div>
       </div>
-      <div id="compareView" style="${pair ? '' : 'display:none'}"></div>
+      <div id="compareView" style="display:none"></div>
+      <div id="sliderView" style="${pair ? '' : 'display:none'}"></div>
 
       ${p.facts ? `
         <div class="dossier-facts">
@@ -152,35 +170,57 @@ function openDossier(groupId, pieceId){
     });
   });
 
-  let singleRendered = false;
-  const compareToggle = document.getElementById('compareToggle');
-  if(compareToggle && pair){
-    compareToggle.addEventListener('click', ()=>{
-      const single = document.getElementById('singleView');
-      const compare = document.getElementById('compareView');
-      const isComparing = compare.style.display !== 'none';
-      if(isComparing){
-        compare.style.display = 'none';
-        single.style.display = '';
-        compareToggle.textContent = '⇄ Ver en paralelo';
-        compareToggle.classList.remove('is-active');
-        if(!singleRendered){ renderViewer(p); singleRendered = true; }
-      } else {
-        single.style.display = 'none';
-        compare.style.display = '';
-        compareToggle.textContent = '✕ Ver solo esta pieza';
-        compareToggle.classList.add('is-active');
-        renderCompareView(pair.origen, pair.resultado);
-      }
+  const rendered = {single:false, compare:false, slider:false};
+  const modeTabs = document.getElementById('compareModeTabs');
+  if(modeTabs && pair){
+    modeTabs.querySelectorAll('.cmt-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(btn.classList.contains('is-on')) return;
+        modeTabs.querySelectorAll('.cmt-btn').forEach(b=>b.classList.toggle('is-on', b===btn));
+        const mode = btn.dataset.mode;
+        document.getElementById('singleView').style.display = mode==='single' ? '' : 'none';
+        document.getElementById('compareView').style.display = mode==='compare' ? '' : 'none';
+        document.getElementById('sliderView').style.display = mode==='slider' ? '' : 'none';
+        if(mode==='single' && !rendered.single){ renderViewer(p); rendered.single = true; }
+        if(mode==='compare' && !rendered.compare){ renderCompareView(pair.origen, pair.resultado); rendered.compare = true; }
+        if(mode==='slider' && !rendered.slider){ renderSliderView(pair.origen, pair.resultado); rendered.slider = true; }
+      });
     });
   }
 
   if(pair){
-    renderCompareView(pair.origen, pair.resultado);
+    renderSliderView(pair.origen, pair.resultado);
+    rendered.slider = true;
   } else {
     renderViewer(p);
-    singleRendered = true;
+    rendered.single = true;
   }
+}
+
+// ============================================================
+// TRANSICIÓN "MORPH" — la miniatura de la card se transforma
+// hacia el dossier en vez de un corte seco
+// ============================================================
+function playMorphTransition(card){
+  const img = card.querySelector('.ic-thumb img');
+  if(!img) return;
+  const r = card.getBoundingClientRect();
+  const ghost = document.createElement('img');
+  ghost.src = img.src;
+  ghost.className = 'morph-ghost';
+  ghost.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; object-fit:cover; z-index:999; border-radius:14px; pointer-events:none; box-shadow:0 30px 60px -20px rgba(0,23,12,.4);`;
+  document.body.appendChild(ghost);
+  const vw = innerWidth, vh = innerHeight;
+  requestAnimationFrame(()=>{
+    ghost.style.transition = 'left .5s cubic-bezier(.2,.8,.2,1), top .5s cubic-bezier(.2,.8,.2,1), width .5s cubic-bezier(.2,.8,.2,1), height .5s cubic-bezier(.2,.8,.2,1), border-radius .5s ease, opacity .45s ease .18s';
+    ghost.style.left = (vw*0.2)+'px';
+    ghost.style.top = (vh*0.22)+'px';
+    ghost.style.width = (vw*0.6)+'px';
+    ghost.style.height = (vh*0.5)+'px';
+    ghost.style.borderRadius = '18px';
+    ghost.style.opacity = '0';
+  });
+  setTimeout(()=> ghost.remove(), 650);
 }
 
 function closeDossier(){
@@ -380,6 +420,74 @@ function wireScrollSync(leftIframe, rightIframe){
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
+}
+
+// ============================================================
+// SLIDER DE ARRASTRE (origen ↔ resultado superpuestos)
+// ============================================================
+function viewerBareHTML(v, pdfContainerId){
+  if(v.kind === 'pdf'){
+    return `<div class="sc-pdf" id="${pdfContainerId}"><div class="pdf-loading">Cargando documento…</div></div>`;
+  } else if(v.kind === 'html'){
+    return `<iframe src="${resolveAsset(v.file)}" title="${v.label}"></iframe>`;
+  } else if(v.kind === 'video'){
+    return `<video src="${resolveAsset(v.file)}" controls preload="metadata"></video>`;
+  } else if(v.kind === 'iframe-external'){
+    return `<iframe src="${v.url}" title="sitio en vivo"></iframe>`;
+  } else if(v.kind === 'live-note' || v.kind === 'live'){
+    return `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:24px;"><p style="color:var(--tenue);text-align:center;">${v.label}</p></div>`;
+  }
+  return '';
+}
+
+function renderSliderView(origen, resultado){
+  const view = document.getElementById('sliderView');
+  if(!view) return;
+  const lv = origen.viewers[0], rv = resultado.viewers[0];
+  view.innerHTML = `
+    <div class="slide-compare" id="sliderStage" style="--split:50%;">
+      <div class="sc-pane sc-bottom" id="sliderBottom">${viewerBareHTML(rv, 'pdfContainerSliderBottom')}</div>
+      <div class="sc-pane sc-top" id="sliderTop">${viewerBareHTML(lv, 'pdfContainerSliderTop')}</div>
+      <div class="sc-badge sc-badge-left"><span class="ic-badge badge-legado">ORIGEN</span></div>
+      <div class="sc-badge sc-badge-right"><span class="ic-badge badge-actual">RESULTADO</span></div>
+      <div class="sc-hint" id="sliderHint">Arrastra para comparar</div>
+      <div class="sc-handle" id="sliderHandle" tabindex="0" role="slider" aria-label="Deslizar para comparar origen y resultado" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <div class="sc-grip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg></div>
+      </div>
+    </div>
+  `;
+  if(rv.kind === 'pdf') renderPdfPages(rv.file, 'pdfContainerSliderBottom');
+  if(lv.kind === 'pdf') renderPdfPages(lv.file, 'pdfContainerSliderTop');
+  if(rv.kind === 'html') scheduleFit(document.querySelector('#sliderBottom iframe'));
+  if(lv.kind === 'html') scheduleFit(document.querySelector('#sliderTop iframe'));
+  initSliderDrag(document.getElementById('sliderStage'), document.getElementById('sliderHandle'));
+}
+
+function initSliderDrag(stage, handle){
+  if(!stage || !handle) return;
+  let dragging = false;
+  const hint = document.getElementById('sliderHint');
+  function setSplit(clientX){
+    const r = stage.getBoundingClientRect();
+    let pct = ((clientX - r.left) / r.width) * 100;
+    pct = Math.max(4, Math.min(96, pct));
+    stage.style.setProperty('--split', pct.toFixed(1) + '%');
+    handle.setAttribute('aria-valuenow', String(Math.round(pct)));
+    if(hint) hint.style.opacity = '0';
+  }
+  handle.addEventListener('pointerdown', (e)=>{ dragging = true; handle.setPointerCapture(e.pointerId); e.preventDefault(); });
+  stage.addEventListener('pointerdown', (e)=>{
+    if(handle.contains(e.target)) return;
+    dragging = true;
+    setSplit(e.clientX);
+  });
+  window.addEventListener('pointermove', (e)=>{ if(dragging) setSplit(e.clientX); });
+  window.addEventListener('pointerup', ()=>{ dragging = false; });
+  handle.addEventListener('keydown', (e)=>{
+    const cur = parseFloat(stage.style.getPropertyValue('--split')) || 50;
+    if(e.key==='ArrowLeft'){ setSplit(stage.getBoundingClientRect().left + stage.getBoundingClientRect().width*(Math.max(4,cur-5)/100)); e.preventDefault(); }
+    if(e.key==='ArrowRight'){ setSplit(stage.getBoundingClientRect().left + stage.getBoundingClientRect().width*(Math.min(96,cur+5)/100)); e.preventDefault(); }
+  });
 }
 
 function renderViewerCustomFile(file){

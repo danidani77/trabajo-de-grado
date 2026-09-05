@@ -81,6 +81,9 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
 @media(max-width:560px){.wrap{padding:0 20px;}}
 .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; transition-delay:calc(var(--i,0) * 70ms);}
 .reveal.is-visible{opacity:1; transform:translateY(0);}
+.reveal-scale{opacity:0; transform:perspective(900px) rotateX(10deg) translateY(26px) translateZ(-50px); transform-origin:50% 100%;
+  transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); transition-delay:calc(var(--i,0) * 70ms);}
+.reveal-scale.is-visible{opacity:1; transform:perspective(900px) rotateX(0deg) translateY(0) translateZ(0);}
 @keyframes breathe{0%,100%{transform:scale(1); opacity:1;} 50%{transform:scale(1.08); opacity:.8;}}
 @keyframes spin-slow{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
 .sb-mark{animation:breathe 4.5s ease-in-out infinite;}
@@ -146,8 +149,12 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
 .items-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
 @media(max-width:1000px){.items-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:640px){.items-grid{grid-template-columns:1fr;}}
-.item-card{background:var(--panel); border:1px solid var(--linea); border-radius:14px; overflow:hidden; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .3s, border-color .25s;}
-.item-card:hover{transform:translateY(-6px); box-shadow:0 24px 44px -20px rgba(9,177,123,.35); border-color:var(--senal-dim);}
+.item-card{background:var(--panel); border:1px solid var(--linea); border-radius:14px; overflow:hidden; cursor:pointer; position:relative; transition:transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .3s, border-color .25s;}
+.item-card:hover{box-shadow:0 24px 44px -20px rgba(9,177,123,.35); border-color:var(--senal-dim);}
+.item-card::after{content:""; position:absolute; inset:0; z-index:1; opacity:0; transition:opacity .3s; pointer-events:none;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(0,188,82,.16), transparent 68%);}
+.item-card:hover::after{opacity:1;}
+@media (prefers-reduced-motion: reduce){.item-card{transition:box-shadow .3s, border-color .25s;}}
 .ic-thumb{aspect-ratio:4/3; min-height:190px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;}
 .ic-thumb img{width:100%; height:100%; object-fit:cover; object-position:top; max-width:none; display:block; transition:transform .5s cubic-bezier(.2,.8,.2,1);}
 .item-card:hover .ic-thumb img{transform:scale(1.06);}
@@ -168,9 +175,10 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
 .dossier-body{max-width:1180px; margin:0 auto; padding:48px 48px 100px;}
 @media(max-width:1000px){.dossier-body{padding:36px 28px 80px;}}
 @media(max-width:640px){.dossier-body{padding:28px 20px 60px;}}
-.compare-toggle{font-family:var(--mono); font-size:12.5px; padding:11px 20px; border:1px solid var(--linea-fuerte); border-radius:20px; color:var(--senal-dim); display:inline-flex; align-items:center; gap:8px; margin-bottom:28px; transition:color .2s, border-color .2s, background .2s;}
-.compare-toggle:hover{border-color:var(--senal); color:var(--senal); background:var(--senal-bg);}
-.compare-toggle.is-active{background:var(--senal); border-color:var(--senal); color:#fff;}
+.compare-mode-tabs{display:inline-flex; gap:3px; background:var(--fondo-2); border-radius:22px; padding:4px; margin-bottom:28px;}
+.cmt-btn{font-family:var(--mono); font-size:12px; letter-spacing:.02em; padding:10px 18px; border-radius:18px; color:var(--tenue); transition:color .2s, background .2s;}
+.cmt-btn.is-on{background:var(--senal); color:#fff;}
+.cmt-btn:not(.is-on):hover{color:var(--senal-dim);}
 .sync-indicator{font-family:var(--mono); font-size:11px; color:var(--senal-dim); margin-bottom:14px; display:flex; align-items:center; gap:7px; min-height:14px;}
 .sync-indicator .dot{width:6px; height:6px; border-radius:50%; background:var(--senal-dim); animation:breathe 2s ease-in-out infinite;}
 .compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
@@ -180,6 +188,24 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
 .compare-label .ic-badge{position:static;}
 .compare-col .viewer-frame iframe, .compare-col .viewer-frame video{height:560px;}
 @media(max-width:640px){.compare-col .viewer-frame iframe, .compare-col .viewer-frame video{height:420px;}}
+.slide-compare{position:relative; width:100%; height:640px; border-radius:12px; overflow:hidden; border:1px solid var(--linea-fuerte); background:#fff; user-select:none; touch-action:none;}
+@media(max-width:640px){.slide-compare{height:420px;}}
+.slide-compare .sc-pane{position:absolute; inset:0;}
+.slide-compare .sc-pane iframe, .slide-compare .sc-pane video{width:100%; height:100%; border:none; display:block;}
+.slide-compare .sc-pdf{height:100%; overflow-y:auto; background:var(--fondo-2); padding:24px;}
+.slide-compare .sc-pdf canvas{display:block; margin:0 auto 16px; box-shadow:0 6px 24px rgba(0,23,12,.15); max-width:100%; height:auto; border-radius:6px;}
+.slide-compare .sc-top{clip-path:inset(0 calc(100% - var(--split, 50%)) 0 0);}
+.slide-compare .sc-badge{position:absolute; top:14px; z-index:3; pointer-events:none;}
+.slide-compare .sc-badge .ic-badge{position:static;}
+.slide-compare .sc-badge-left{left:14px;}
+.slide-compare .sc-badge-right{right:14px;}
+.slide-compare .sc-handle{position:absolute; top:0; bottom:0; left:var(--split, 50%); transform:translateX(-50%); width:44px; display:flex; align-items:center; justify-content:center; cursor:ew-resize; z-index:5;}
+.slide-compare .sc-handle::before{content:""; position:absolute; top:0; bottom:0; left:50%; width:2px; background:#fff; box-shadow:0 0 0 1px rgba(0,0,0,.15), 0 0 30px rgba(0,0,0,.3); transform:translateX(-50%); pointer-events:none;}
+.slide-compare .sc-grip{position:relative; width:40px; height:40px; border-radius:50%; background:#fff; color:var(--senal-dim); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,23,12,.28); transition:transform .2s;}
+.slide-compare .sc-grip svg{width:18px; height:18px;}
+.slide-compare .sc-handle:hover .sc-grip, .slide-compare .sc-handle:active .sc-grip{transform:scale(1.1);}
+.slide-compare .sc-hint{position:absolute; bottom:14px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.85); background:rgba(0,23,12,.55); padding:6px 14px; border-radius:20px; z-index:3; pointer-events:none; transition:opacity .3s;}
+@media (prefers-reduced-motion: reduce){.slide-compare .sc-grip{transition:none;}}
 .dossier-eyebrow{font-family:var(--mono); font-size:12px; color:var(--senal); text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px;}
 .dossier-title{font-family:var(--display); font-weight:700; font-size:clamp(30px,4.4vw,52px); line-height:1.05; margin-bottom:22px;}
 .dossier-summary{font-size:16px; line-height:1.8; color:var(--tenue); max-width:780px; margin-bottom:40px;}
@@ -329,6 +355,14 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
 #introStage .hud-cta.is-on{opacity:1; pointer-events:auto; transform:translate(-50%,0); animation:introCtaPulse 2.4s ease-out infinite;}
 #introStage .hud-cta:hover{background:var(--intro-cielo);}
 @keyframes introCtaPulse{0%{box-shadow:0 0 0 0 rgba(0,188,82,.45);} 70%{box-shadow:0 0 0 16px rgba(0,188,82,0);} 100%{box-shadow:0 0 0 0 rgba(0,188,82,0);}}
+#introStage .sound-toggle{position:absolute; bottom:70px; right:28px; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:rgba(0,23,12,.55); border:1px solid rgba(181,253,255,.2); color:rgba(234,248,242,.7); pointer-events:auto; cursor:pointer; transition:color .2s, border-color .2s, background .2s;}
+#introStage .sound-toggle:hover{color:var(--intro-cielo); border-color:var(--intro-cielo);}
+#introStage .sound-toggle svg{width:16px; height:16px;}
+#introStage .sound-toggle .icon-on{display:none;}
+#introStage .sound-toggle.is-on{color:var(--intro-cielo); border-color:var(--intro-cielo);}
+#introStage .sound-toggle.is-on .icon-off{display:none;}
+#introStage .sound-toggle.is-on .icon-on{display:block;}
 @media (prefers-reduced-motion: reduce){
   #introStage .rig{transition:none;}
   #introStage .mark, #introStage .front-card .fc-body, #introStage .front-card::before, #introStage .kicker .bar, #introStage .hud-cta.is-on, #introStage .hud-top span:last-child.pulse, #introStage .finale-plate{animation:none;}
@@ -460,6 +494,10 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
   <div class="hud-bottom"><span>Henkia · 2026</span><span id="depthLabel">Z 0000</span></div>
   <div class="scroll-hint" id="scrollHint"><span>Scroll</span><span class="chev"></span></div>
   <button class="hud-cta" id="ctaEnter">Entrar al archivo →</button>
+  <button class="sound-toggle" id="soundToggle" aria-label="Activar sonido" title="Sonido">
+    <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9v6h4l5 5V4L8 9H4Z"/><path d="M17 8a5 5 0 0 1 0 8M20 5a9 9 0 0 1 0 14" stroke-dasharray="2 3"/><path d="M2 2l20 20" stroke-width="1.6"/></svg>
+    <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9v6h4l5 5V4L8 9H4Z"/><path d="M17 8a5 5 0 0 1 0 8M20 5a9 9 0 0 1 0 14"/></svg>
+  </button>
 </div>
 </div>
 <script>
@@ -473,8 +511,53 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
   const sceneLabel = document.getElementById('sceneLabel');
   const scrollHint = document.getElementById('scrollHint');
   const ctaBtn = document.getElementById('ctaEnter');
+  const soundToggle = document.getElementById('soundToggle');
   const finalePlate = document.querySelector('#introStage .obj[data-z="11800"] .finale-plate');
   const prefersReduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  // Sonido sutil, sintetizado (sin archivos de audio), apagado por defecto.
+  const SoundFX = (function(){
+    let ctx = null, enabled = false;
+    function getCtx(){ if(!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); return ctx; }
+    function whoosh(){
+      if(!enabled) return;
+      const c = getCtx(), o = c.createOscillator(), g = c.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(240, c.currentTime);
+      o.frequency.exponentialRampToValueAtTime(760, c.currentTime+0.18);
+      g.gain.setValueAtTime(0.0001, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.045, c.currentTime+0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime+0.24);
+      o.connect(g); g.connect(c.destination);
+      o.start(); o.stop(c.currentTime+0.26);
+    }
+    function chime(){
+      if(!enabled) return;
+      const c = getCtx();
+      [523.25, 659.25].forEach((freq,i)=>{
+        const o = c.createOscillator(), g = c.createGain();
+        o.type = 'sine'; o.frequency.value = freq;
+        const t = c.currentTime + i*0.09;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.05, t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t+0.5);
+        o.connect(g); g.connect(c.destination);
+        o.start(t); o.stop(t+0.55);
+      });
+    }
+    function setEnabled(v){ enabled = v; try{ localStorage.setItem('introSoundOn', v?'1':'0'); }catch(e){} }
+    function isEnabled(){ return enabled; }
+    return {whoosh, chime, setEnabled, isEnabled};
+  })();
+  if(soundToggle){
+    soundToggle.addEventListener('click', ()=>{
+      const next = !SoundFX.isEnabled();
+      SoundFX.setEnabled(next);
+      soundToggle.classList.toggle('is-on', next);
+      soundToggle.setAttribute('aria-label', next ? 'Silenciar' : 'Activar sonido');
+      if(next) SoundFX.chime();
+    });
+  }
 
   const STOPS = [
     {z:100,   label:'Escena 01 / 05 · Apertura',    cyan:.10, green:.16},
@@ -577,6 +660,9 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
     const toIndex = target;
     const toZ = STOPS[toIndex].z;
     const toTint = STOPS[toIndex];
+    if(toIndex !== fromIndex){
+      if(toIndex === LAST) SoundFX.chime(); else SoundFX.whoosh();
+    }
     currentIndex = toIndex;
     applyStopUI(toIndex);
     if(prefersReduced){

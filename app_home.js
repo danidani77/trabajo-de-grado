@@ -103,7 +103,7 @@ function renderHome(){
       <div class="wrap intro-grid">
         <div class="intro-label">Sobre el<br>enfoque</div>
         <div class="intro-text reveal">
-          <p>El Boletín 3 en Uno, el Kit del Líder, los micrositios del portal BUK, ARUS [Rec]onoce y la Guía de Onboarding ya eran piezas de comunicación <strong>en uso activo</strong> dentro de la compañía, con un formato y un criterio editorial propios.</p>
+          <p>El Boletín 3 en Uno, el Kit del Líder, los micrositios del portal BUK, Henkia [Rec]onoce y la Guía de Onboarding ya eran piezas de comunicación <strong>en uso activo</strong> dentro de la compañía, con un formato y un criterio editorial propios.</p>
           <p>Lo que documenta este archivo es cómo, con Claude como herramienta de generación de código, cada una de esas piezas se llevó <strong>un paso más allá</strong> de lo que su formato original permitía — sin alterar el criterio editorial ya definido por los equipos responsables de cada contenido.</p>
           <p><a href="#" onclick="navigate('obras'); return false;">Ver el catálogo completo, pieza por pieza →</a></p>
         </div>

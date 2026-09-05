@@ -190,6 +190,48 @@ function closeDossier(){
   document.body.style.overflow = '';
 }
 
+// Muchas piezas resultado (HTML reconstruido) tienen un ancho fijo mayor al panel
+// que las muestra, sobre todo en la vista de comparación. Esto escala el iframe
+// para que el contenido completo sea visible sin recortes ni scroll interno.
+function fitIframeContent(iframe){
+  if(!iframe) return;
+  try{
+    iframe.style.transform = '';
+    iframe.style.width = '';
+    iframe.style.height = '';
+    const baseHeight = iframe.offsetHeight;
+    const doc = iframe.contentDocument;
+    if(!doc || !doc.documentElement) return;
+    const naturalWidth = Math.max(doc.documentElement.scrollWidth, doc.body ? doc.body.scrollWidth : 0) + 20;
+    const containerWidth = iframe.clientWidth;
+    if(containerWidth > 0 && naturalWidth > containerWidth + 4){
+      const scale = containerWidth / naturalWidth;
+      iframe.style.transformOrigin = 'top left';
+      iframe.style.width = (100/scale) + '%';
+      iframe.style.height = (baseHeight/scale) + 'px';
+      iframe.style.transform = `scale(${scale})`;
+    }
+  }catch(e){ /* origen cruzado: no se puede medir, se deja tal cual */ }
+}
+window.addEventListener('resize', ()=>{
+  document.querySelectorAll('.viewer-frame iframe').forEach(fitIframeContent);
+});
+// El evento 'load' del iframe no siempre llega a tiempo (o en absoluto) según el
+// motor/caché, así que además se reintenta por polling hasta que el documento
+// interno esté listo — barato e inofensivo si ya se aplicó por el evento.
+function scheduleFit(iframe){
+  if(!iframe) return;
+  iframe.addEventListener('load', ()=>fitIframeContent(iframe));
+  let attempts = 0;
+  (function tryFit(){
+    attempts++;
+    let ready = false;
+    try{ ready = !!(iframe.contentDocument && iframe.contentDocument.readyState === 'complete'); }catch(e){ return; }
+    if(ready) fitIframeContent(iframe);
+    if(attempts < 20) setTimeout(tryFit, 100);
+  })();
+}
+
 function viewerFrameHTML(v, pdfContainerId){
   if(v.kind === 'pdf'){
     return `
@@ -235,6 +277,10 @@ function renderViewer(p){
   if(!frame) return;
   frame.innerHTML = viewerFrameHTML(v, 'pdfContainer');
   if(v.kind === 'pdf') renderPdfPages(v.file, 'pdfContainer');
+  if(v.kind === 'html'){
+    const iframe = frame.querySelector('iframe');
+    if(iframe) scheduleFit(iframe);
+  }
 }
 
 // ============================================================
@@ -250,6 +296,10 @@ function renderCompareSide(piece, side){
   if(!frame) return;
   frame.innerHTML = viewerFrameHTML(v, pdfId);
   if(v.kind === 'pdf') renderPdfPages(v.file, pdfId);
+  if(v.kind === 'html'){
+    const iframe = frame.querySelector('iframe');
+    if(iframe) scheduleFit(iframe);
+  }
 }
 
 function renderCompareView(origen, resultado){
@@ -342,6 +392,8 @@ function renderViewerCustomFile(file){
       <iframe src="${resolveAsset(file)}" title="variante"></iframe>
     </div>
   `;
+  const iframe = frame.querySelector('iframe');
+  if(iframe) scheduleFit(iframe);
   frame.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 

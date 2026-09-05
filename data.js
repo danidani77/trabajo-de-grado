@@ -165,7 +165,7 @@ const GROUP_BUK = {
 
 const GROUP_RECONOCE = {
   id:"reconoce",
-  title:"ARUS [Rec]onoce",
+  title:"Henkia [Rec]onoce",
   desc:"Espacio de reconocimiento a colaboradores, equipos, clientes y proveedores. La pieza ya era un espacio valorado dentro de la compañía — se amplió su capacidad de contar más historias con más cuidado visual.",
   pieces:[
     {

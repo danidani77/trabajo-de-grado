@@ -795,7 +795,6 @@ window.__enterSite = function(){
     window.scrollTo(0, 0);
     if(shell) shell.style.display = '';
     if(typeof navigate === 'function') navigate('home');
-    document.dispatchEvent(new Event('archivo:entered'));
   }
   if(intro){
     intro.style.opacity = '0';
@@ -886,21 +885,12 @@ window.__enterSite = function(){
   const closeBtn = document.getElementById('helpClose');
   const startBtn = document.getElementById('helpStart');
   function openHelp(){ overlay.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
-  function closeHelp(){
-    overlay.classList.remove('is-open');
-    document.body.style.overflow = '';
-    try{ localStorage.setItem('archivoHelpSeen', '1'); }catch(e){}
-  }
+  function closeHelp(){ overlay.classList.remove('is-open'); document.body.style.overflow = ''; }
   fab.addEventListener('click', openHelp);
   closeBtn.addEventListener('click', closeHelp);
   startBtn.addEventListener('click', closeHelp);
   overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeHelp(); });
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && overlay.classList.contains('is-open')) closeHelp(); });
-  document.addEventListener('archivo:entered', ()=>{
-    let seen = false;
-    try{ seen = localStorage.getItem('archivoHelpSeen') === '1'; }catch(e){}
-    if(!seen) setTimeout(openHelp, 700);
-  });
 })();
 </script>
 <script src="resolveAsset.js"></script>

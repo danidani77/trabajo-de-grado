@@ -4,18 +4,22 @@ const MANUAL_SECTIONS = [
     title: "Principios de trabajo",
     items: [
       {
+        icon: "lock",
         h: "El contenido no es tuyo para reinterpretar",
         body: "Si el texto viene de una política, un documento legal, o una comunicación ya aprobada por otra área (Talento Humano, Legal, Comunicaciones), tu trabajo es diagramarlo — no resumirlo, no mejorarlo, no reescribirlo. Pide a Claude explícitamente: <code>no resumas ni reinterpretes este contenido, solo ajústalo al formato</code>. Si Claude produce un resumen por iniciativa propia, corrígelo de inmediato: es el error más costoso posible en este tipo de piezas."
       },
       {
+        icon: "layers",
         h: "Cada pieza nueva no empieza de cero",
         body: "Antes de pedir una pieza nueva, dale a Claude el contexto de marca ya definido (paleta, tipografía, componentes existentes) en vez de dejar que lo reinvente. Esto es lo que permitió que el Kit del Líder evolucionara cinco veces sin reconstruirse desde cero cada mes: cada conversación nueva parte del sistema de diseño de la anterior, no de una hoja en blanco."
       },
       {
+        icon: "eye",
         h: "Nunca aceptes la primera imagen generada por IA",
         body: "Si necesitas una imagen (no una foto real de la compañía), Claude puede generarla, pero revisa con ojo crítico: logotipos deformados, texto ilegible, manos con dedos de más, texturas que no encajan con la identidad de marca. En más de una pieza se descartaron imágenes generadas por IA y se reemplazaron por fotografía corporativa real — es una decisión de calidad, no un capricho."
       },
       {
+        icon: "check-device",
         h: "Verifica en el medio real antes de dar por terminada una pieza",
         body: "Un HTML que se ve perfecto en el navegador puede romperse en Gmail, Outlook o al exportarse a imagen. Antes de entregar, prueba la pieza en el entorno real donde va a vivir: renderiza el correo, abre el micrositio en móvil, reproduce el video completo."
       }

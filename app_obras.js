@@ -253,7 +253,7 @@ document.addEventListener('keydown', (e)=>{
   if(videos.length < 2) return;
   e.preventDefault();
   const anyPaused = videos.some(v => v.paused);
-  videos.forEach(v => anyPaused ? v.play() : v.pause());
+  videos.forEach(v => { if(anyPaused) v.play().catch(()=>{}); else v.pause(); });
 });
 
 // Muchas piezas resultado (HTML reconstruido) tienen un ancho fijo mayor al panel

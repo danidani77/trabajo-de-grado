@@ -80,6 +80,11 @@ function renderHome(){
   const total = totalPiezas();
   mainEl.innerHTML = `
     <section class="home-hero brand-band wrap">
+      <svg class="hero-mark-bg" viewBox="0 0 481.14 412.23" aria-hidden="true">
+        <path d="M240.14,242.21c79.08.09,157.87,67.79,187.5,142.18,5.54,13.92-5.56,27.84-20.54,27.84h-102.66s12.86-157.83-64.37-157.94c-77.23.11-64.37,157.94-64.37,157.94h-102.66c-14.98,0-26.08-13.92-20.54-27.84,29.62-74.39,108.42-142.09,187.5-142.18h.15Z"/>
+        <path d="M481.14,319.83h-14.64c-.26-.39-35.45-104.84-225.93-104.58-190.34.26-225.79,104.23-225.93,104.58H0V94.19h14.64c.04.11,35.36,104.84,225.93,104.58,190.59-.26,225.73-104.31,225.93-104.58h14.64v225.63Z"/>
+        <path d="M175.69,0s-12.86,157.83,64.37,157.94c77.23-.11,64.37-157.94,64.37-157.94h102.66c14.98,0,26.08,13.92,20.54,27.84-29.62,74.39-108.42,142.09-187.5,142.18h-.15c-79.08-.09-157.87-67.79-187.5-142.18C46.95,13.92,58.05,0,73.03,0h102.66Z"/>
+      </svg>
       <div class="hh-kicker"><span class="dot"></span>Trabajo de grado · Institución Universitaria Pascual Bravo</div>
       <h1>El archivo, pieza por pieza.</h1>
       <p class="hh-dek">Seis frentes de trabajo, cada uno con su versión original y su resultado en código — abiertos aquí para revisión directa, no solo en captura.</p>

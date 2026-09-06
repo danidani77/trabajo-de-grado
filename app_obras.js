@@ -78,11 +78,21 @@ function findComparePair(g, p){
   }
   const resultado = g.pieces.find(x=>x.compareWith===p.id);
   if(resultado) return {origen:p, resultado};
+  if(p.compareViewers){
+    const [oi, ri] = p.compareViewers;
+    if(p.viewers[oi] && p.viewers[ri]){
+      return {
+        origen: {...p, title:p.viewers[oi].label, viewers:[p.viewers[oi]]},
+        resultado: {...p, title:p.viewers[ri].label, viewers:[p.viewers[ri]]},
+      };
+    }
+  }
   return null;
 }
 
 function openDossier(groupId, pieceId){
   dossierActiveViewerIdx = 0;
+  compareIdx = {left:0, right:0};
   const {g,p} = findPiece(groupId, pieceId);
   const pair = findComparePair(g,p);
   const overlay = document.getElementById('dossierOverlay');
@@ -307,6 +317,13 @@ function viewerFrameHTML(v, pdfContainerId){
         <p style="color:var(--tenue); text-align:center; max-width:480px; font-size:15px;">${v.label}</p>
       </div>
     `;
+  } else if(v.kind === 'image'){
+    return `
+      <div class="viewer-frame">
+        <div class="viewer-toolbar"><span>IMAGEN</span><a href="${resolveAsset(v.file)}" target="_blank">Abrir en pestaña nueva ↗</a></div>
+        <div class="pdf-viewer"><img src="${resolveAsset(v.file)}" alt="${v.label}" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius:6px; box-shadow:0 6px 24px rgba(0,23,12,.15);"></div>
+      </div>
+    `;
   }
   return '';
 }
@@ -344,18 +361,17 @@ function renderCompareSide(piece, side){
 
 function renderCompareView(origen, resultado){
   const view = document.getElementById('compareView');
-  compareIdx = {left:0, right:0};
   view.innerHTML = `
     <div class="sync-indicator" id="syncIndicator"></div>
     <div class="compare-grid">
       <div class="compare-col">
         <div class="compare-label"><span class="ic-badge badge-legado">ORIGEN</span>${origen.title}</div>
-        ${origen.viewers.length>1 ? `<div class="viewer-tabs compare-tabs" data-side="left">${origen.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length>22?v.label.slice(0,22)+'…':v.label}</button>`).join('')}</div>` : ''}
+        ${origen.viewers.length>1 ? `<div class="viewer-tabs compare-tabs" data-side="left">${origen.viewers.map((v,i)=>`<button class="vt-btn ${i===compareIdx.left?'is-on':''}" data-idx="${i}">${v.label.length>22?v.label.slice(0,22)+'…':v.label}</button>`).join('')}</div>` : ''}
         <div id="viewerFrameLeft"></div>
       </div>
       <div class="compare-col">
         <div class="compare-label"><span class="ic-badge badge-actual">RESULTADO</span>${resultado.title}</div>
-        ${resultado.viewers.length>1 ? `<div class="viewer-tabs compare-tabs" data-side="right">${resultado.viewers.map((v,i)=>`<button class="vt-btn ${i===0?'is-on':''}" data-idx="${i}">${v.label.length>22?v.label.slice(0,22)+'…':v.label}</button>`).join('')}</div>` : ''}
+        ${resultado.viewers.length>1 ? `<div class="viewer-tabs compare-tabs" data-side="right">${resultado.viewers.map((v,i)=>`<button class="vt-btn ${i===compareIdx.right?'is-on':''}" data-idx="${i}">${v.label.length>22?v.label.slice(0,22)+'…':v.label}</button>`).join('')}</div>` : ''}
         <div id="viewerFrameRight"></div>
       </div>
     </div>
@@ -436,6 +452,8 @@ function viewerBareHTML(v, pdfContainerId){
     return `<iframe src="${v.url}" title="sitio en vivo"></iframe>`;
   } else if(v.kind === 'live-note' || v.kind === 'live'){
     return `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:24px;"><p style="color:var(--tenue);text-align:center;">${v.label}</p></div>`;
+  } else if(v.kind === 'image'){
+    return `<div class="sc-pdf"><img src="${resolveAsset(v.file)}" alt="${v.label}" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius:6px; box-shadow:0 6px 24px rgba(0,23,12,.15);"></div>`;
   }
   return '';
 }
@@ -443,24 +461,48 @@ function viewerBareHTML(v, pdfContainerId){
 function renderSliderView(origen, resultado){
   const view = document.getElementById('sliderView');
   if(!view) return;
-  const lv = origen.viewers[0], rv = resultado.viewers[0];
+  const edTabsHTML = (piece, side)=> piece.viewers.length>1 ? `
+    <div class="sc-edition-tabs" data-side="${side}">
+      ${piece.viewers.map((v,i)=>`<button class="sc-ed-btn ${i===compareIdx[side]?'is-on':''}" data-idx="${i}">${v.label}</button>`).join('')}
+    </div>` : '';
   view.innerHTML = `
     <div class="slide-compare" id="sliderStage" style="--split:50%;">
-      <div class="sc-pane sc-bottom" id="sliderBottom">${viewerBareHTML(rv, 'pdfContainerSliderBottom')}</div>
-      <div class="sc-pane sc-top" id="sliderTop">${viewerBareHTML(lv, 'pdfContainerSliderTop')}</div>
-      <div class="sc-badge sc-badge-left"><span class="ic-badge badge-legado">ORIGEN</span></div>
-      <div class="sc-badge sc-badge-right"><span class="ic-badge badge-actual">RESULTADO</span></div>
+      <div class="sc-pane sc-bottom" id="sliderBottom"></div>
+      <div class="sc-pane sc-top" id="sliderTop"></div>
+      <div class="sc-badge sc-badge-left"><span class="ic-badge badge-legado">ORIGEN</span>${edTabsHTML(origen,'left')}</div>
+      <div class="sc-badge sc-badge-right"><span class="ic-badge badge-actual">RESULTADO</span>${edTabsHTML(resultado,'right')}</div>
       <div class="sc-hint" id="sliderHint">Arrastra para comparar</div>
       <div class="sc-handle" id="sliderHandle" tabindex="0" role="slider" aria-label="Deslizar para comparar origen y resultado" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
         <div class="sc-grip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg></div>
       </div>
     </div>
   `;
-  if(rv.kind === 'pdf') renderPdfPages(rv.file, 'pdfContainerSliderBottom');
-  if(lv.kind === 'pdf') renderPdfPages(lv.file, 'pdfContainerSliderTop');
-  if(rv.kind === 'html') scheduleFit(document.querySelector('#sliderBottom iframe'));
-  if(lv.kind === 'html') scheduleFit(document.querySelector('#sliderTop iframe'));
+  renderSliderSide(origen, resultado, 'left');
+  renderSliderSide(origen, resultado, 'right');
+  view.querySelectorAll('.sc-edition-tabs').forEach(group=>{
+    const side = group.dataset.side;
+    group.querySelectorAll('.sc-ed-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(btn.classList.contains('is-on')) return;
+        compareIdx[side] = parseInt(btn.dataset.idx, 10);
+        group.querySelectorAll('.sc-ed-btn').forEach((b,i)=>b.classList.toggle('is-on', i===compareIdx[side]));
+        renderSliderSide(origen, resultado, side);
+      });
+    });
+  });
   initSliderDrag(document.getElementById('sliderStage'), document.getElementById('sliderHandle'));
+}
+
+function renderSliderSide(origen, resultado, side){
+  const piece = side==='left' ? origen : resultado;
+  const paneId = side==='left' ? 'sliderTop' : 'sliderBottom';
+  const pdfId = side==='left' ? 'pdfContainerSliderTop' : 'pdfContainerSliderBottom';
+  const pane = document.getElementById(paneId);
+  if(!pane) return;
+  const v = piece.viewers[compareIdx[side]] || piece.viewers[0];
+  pane.innerHTML = viewerBareHTML(v, pdfId);
+  if(v.kind === 'pdf') renderPdfPages(v.file, pdfId);
+  if(v.kind === 'html') scheduleFit(pane.querySelector('iframe'));
 }
 
 function initSliderDrag(stage, handle){
@@ -477,7 +519,7 @@ function initSliderDrag(stage, handle){
   }
   handle.addEventListener('pointerdown', (e)=>{ dragging = true; handle.setPointerCapture(e.pointerId); e.preventDefault(); });
   stage.addEventListener('pointerdown', (e)=>{
-    if(handle.contains(e.target)) return;
+    if(handle.contains(e.target) || e.target.closest('.sc-edition-tabs')) return;
     dragging = true;
     setSplit(e.clientX);
   });

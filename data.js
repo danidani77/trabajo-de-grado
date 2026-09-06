@@ -33,7 +33,9 @@ const GROUP_EN1 = {
       tag:"Código propio · Compatible Gmail, Outlook y Apple Mail",
       thumb:"assets/thumbs/en1_sistema.jpg",
       compareWith:"en1-manual",
-      viewers: EN1_VARIANTS.map(v => ({kind:"html", label:v.label, file:v.file})),
+      viewers: EN1_VARIANTS.map(v => ({kind:"html", label:v.label, file:v.file})).concat([
+        {kind:"html", label:"Septiembre", file:"assets/htmls/3enUno_septiembre.html"},
+      ]),
       variants: EN1_VARIANTS,
       facts:[["Direcciones exploradas","5"],["Clientes verificados","Gmail, Outlook, Apple Mail"],["Formato","HTML autocontenido"]],
       process:[
@@ -56,8 +58,8 @@ const GROUP_KIT = {
       tag:"Formato estático, sin navegación",
       thumb:"assets/thumbs/kit_marzo.jpg",
       isLegacy:true,
-      viewers:[{kind:"pdf", label:"Ver documento completo", file:"assets/pdfs/kit_marzo.pdf"}],
-      facts:[["Formato","PDF, una lámina"],["Navegación","Ninguna"],["Distribución","Correo corporativo"]],
+      viewers:[{kind:"image", label:"Ver documento completo", file:"assets/img/kit_lider_marzo.jpg"}],
+      facts:[["Formato","Imagen, una lámina"],["Navegación","Ninguna"],["Distribución","Correo corporativo"]],
     },
     {
       id:"kit-julio", num:"02", title:"Julio — edición 03",
@@ -74,10 +76,10 @@ const GROUP_KIT = {
       ]
     },
     {
-      id:"kit-agosto", num:"03", title:"Agosto — edición Henkia",
+      id:"kit-septiembre", num:"03", title:"Septiembre — edición Henkia",
       tag:"Ya bajo la nueva identidad de marca",
       thumb:"assets/thumbs/kit_agosto.jpg",
-      viewers:[{kind:"live-note", label:"Sitio institucional — captura pendiente de autorización.", url:null}],
+      viewers:[{kind:"html", label:"Ver sitio completo", file:"assets/htmls/kit_lider_septiembre.html"}],
       facts:[["Marca","Henkia (transición desde ARUS)"],["Novedad","Contadores en vivo, video-manifiesto"],["Contexto","Coincide con el cambio de marca de la compañía"]],
     },
   ]
@@ -93,6 +95,7 @@ const GROUP_BUK = {
       tag:"Autocuidado · Bienestar físico, emocional y financiero",
       thumb:"assets/thumbs/buk_salud.jpg",
       compareThumbBefore:"assets/thumbs/buk_salud.jpg",
+      compareViewers:[0,1],
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_salud.pdf"},
         {kind:"html", label:"Micrositio actual", file:"assets/htmls/salud-integral_15.html"},
@@ -104,6 +107,7 @@ const GROUP_BUK = {
       tag:"Mosaico Integrador y Mosaico Administrativo",
       thumb:"assets/thumbs/buk_mosaico.jpg",
       compareThumbBefore:"assets/thumbs/buk_mosaico.jpg",
+      compareViewers:[0,1],
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_mosaico.pdf"},
         {kind:"html", label:"Micrositio actual", file:"assets/htmls/Henkia_Mosaico_1.html"},
@@ -115,6 +119,7 @@ const GROUP_BUK = {
       tag:"Reporte de acoso · Seguridad y salud en el trabajo",
       thumb:"assets/thumbs/buk_convivencia.jpg",
       compareThumbBefore:"assets/thumbs/buk_convivencia.jpg",
+      compareViewers:[0,1],
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_convivencia.pdf"},
         {kind:"html", label:"Micrositio actual", file:"assets/htmls/comite_convivencia_henkia_9.html"},
@@ -126,6 +131,7 @@ const GROUP_BUK = {
       tag:"Transportes, viáticos, papelería, archivo",
       thumb:"assets/thumbs/buk_servicios.jpg",
       compareThumbBefore:"assets/thumbs/buk_servicios.jpg",
+      compareViewers:[0,1],
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_servicios.pdf"},
         {kind:"html", label:"Micrositio actual", file:"assets/htmls/Servicios_Administrativos_-_Henkia_5.html"},
@@ -137,6 +143,7 @@ const GROUP_BUK = {
       tag:"Kiosko, Pentaho, cesantías, incapacidades, dotación",
       thumb:"assets/thumbs/buk_compensacion.jpg",
       compareThumbBefore:"assets/thumbs/buk_compensacion.jpg",
+      compareViewers:[0,1],
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_compensacion.pdf"},
         {kind:"html", label:"Micrositio actual", file:"assets/htmls/mi-compensacion-henkia_6.html"},
@@ -148,6 +155,7 @@ const GROUP_BUK = {
       tag:"Posicionamiento, cadena de valor, atributos de cultura",
       thumb:"assets/thumbs/buk_estrategia.jpg",
       compareThumbBefore:"assets/thumbs/buk_estrategia.jpg",
+      compareViewers:[0,1],
       viewers:[
         {kind:"pdf", label:"PDF original", file:"assets/pdfs/buk_estrategia.pdf"},
         {kind:"html", label:"Micrositio actual", file:"assets/htmls/Henkia_Estrategia_y_Cultura_18.html"},
@@ -225,8 +233,8 @@ const GROUP_ONBOARDING = {
 
 const GROUP_MAILINGS = {
   id:"mailings",
-  title:"Mailings, ecards y portadas",
-  desc:"Comunicaciones puntuales de uso casi diario — mailings de campañas, ecards de celebración y portadas de piezas internas — migradas al mismo flujo de trabajo con código propio.",
+  title:"Editor de Citaciones",
+  desc:"Generación de tarjetas de citación a reuniones y comités, on-brand y sin pasar por diseño, migrada al mismo flujo de trabajo con código propio.",
   pieces:[
     {
       id:"mailings-citaciones", num:"01", title:"Editor de citaciones",

@@ -195,10 +195,14 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
 .slide-compare .sc-pdf{height:100%; overflow-y:auto; background:var(--fondo-2); padding:24px;}
 .slide-compare .sc-pdf canvas{display:block; margin:0 auto 16px; box-shadow:0 6px 24px rgba(0,23,12,.15); max-width:100%; height:auto; border-radius:6px;}
 .slide-compare .sc-top{clip-path:inset(0 calc(100% - var(--split, 50%)) 0 0);}
-.slide-compare .sc-badge{position:absolute; top:14px; z-index:3; pointer-events:none;}
+.slide-compare .sc-badge{position:absolute; top:14px; z-index:3; pointer-events:none; max-width:44%;}
 .slide-compare .sc-badge .ic-badge{position:static;}
 .slide-compare .sc-badge-left{left:14px;}
-.slide-compare .sc-badge-right{right:14px;}
+.slide-compare .sc-badge-right{right:14px; text-align:right;}
+.slide-compare .sc-edition-tabs{display:flex; gap:4px; margin-top:8px; flex-wrap:wrap; pointer-events:auto;}
+.slide-compare .sc-badge-right .sc-edition-tabs{justify-content:flex-end;}
+.slide-compare .sc-ed-btn{font-family:var(--mono); font-size:9.5px; letter-spacing:.02em; padding:5px 10px; border-radius:12px; background:rgba(255,255,255,.92); color:var(--tenue); box-shadow:0 2px 8px rgba(0,23,12,.18);}
+.slide-compare .sc-ed-btn.is-on{background:var(--senal); color:#fff;}
 .slide-compare .sc-handle{position:absolute; top:0; bottom:0; left:var(--split, 50%); transform:translateX(-50%); width:44px; display:flex; align-items:center; justify-content:center; cursor:ew-resize; z-index:5;}
 .slide-compare .sc-handle::before{content:""; position:absolute; top:0; bottom:0; left:50%; width:2px; background:#fff; box-shadow:0 0 0 1px rgba(0,0,0,.15), 0 0 30px rgba(0,0,0,.3); transform:translateX(-50%); pointer-events:none;}
 .slide-compare .sc-grip{position:relative; width:40px; height:40px; border-radius:50%; background:#fff; color:var(--senal-dim); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,23,12,.28); transition:transform .2s;}
@@ -401,7 +405,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
       <div class="scene-block">
         <div class="plate-label">· Escena 02 · El enfoque</div>
         <h1 class="beat">Piezas que <em>ya</em><br>funcionaban.</h1>
-        <p class="dek">Boletín, Kit del Líder, portal BUK, Henkia [Rec]onoce, Onboarding y Mailings — seis procesos, llevados un paso más allá con Claude.</p>
+        <p class="dek">Boletín, Kit del Líder, portal BUK, Henkia [Rec]onoce, Onboarding y el Editor de Citaciones — seis procesos, llevados un paso más allá con Claude.</p>
       </div>
     </div>
     <!-- ESCENA 4 — FRENTES -->
@@ -450,8 +454,8 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--senal); outline-of
       <div class="fc-body" style="animation-delay:-3.5s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg></div>
         <div class="fc-num">06/06</div>
-        <div class="fc-name">Mailings y citaciones</div>
-        <div class="fc-desc">E-cards y portadas para convocatorias internas.</div>
+        <div class="fc-name">Editor de Citaciones</div>
+        <div class="fc-desc">Tarjetas de citación a reuniones y comités, on-brand y sin pasar por diseño.</div>
       </div>
     </div>
     <!-- ESCENA 5 — CIFRAS -->

@@ -5,13 +5,19 @@ function renderObras(){
   mainEl.innerHTML = `
     <section class="obras-head brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Registro completo</div>
-      <h1 style="font-family:var(--display); font-weight:700; font-size:clamp(30px,4.5vw,48px); line-height:1.08; max-width:820px;">Catálogo de piezas.</h1>
-      <p class="hh-body">Cada pieza incluye su documento o sitio de origen y, cuando aplica, el resultado final — abiertos directamente aquí, no solo en captura.</p>
+      <h1 style="font-family:var(--display); font-weight:300; font-size:clamp(30px,4.5vw,48px); line-height:1.08; max-width:820px;">Catálogo de piezas.</h1>
+      <p class="hh-body">Cada pieza incluye su documento o sitio de origen y, cuando aplica, el resultado final, abiertos directamente aquí.</p>
     </section>
+    <nav class="og-jump wrap" aria-label="Ir a un frente de trabajo">
+      ${CATALOG.map((g,i)=>`<button class="og-jump-btn" data-jump="${g.id}"><span class="og-jump-num">${String(i+1).padStart(2,'0')}</span>${g.title}</button>`).join('')}
+    </nav>
     <div class="obras-groups wrap">
       ${CATALOG.map((g,i)=>renderGroup(g,i)).join('')}
     </div>
   `;
+  document.querySelectorAll('.og-jump-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>scrollToGroup(btn.dataset.jump));
+  });
   document.querySelectorAll('.item-card').forEach(card=>{
     card.addEventListener('click', ()=> openDossier(card.dataset.group, card.dataset.piece));
     card.addEventListener('mousemove', (e)=>{
@@ -38,23 +44,35 @@ function thumbOrPlaceholder(piece){
 }
 
 function renderGroup(g, i){
+  const total = CATALOG.length;
+  const num = String((i??0)+1).padStart(2,'0');
   return `
-    <section class="og-section reveal" id="grp-${g.id}">
-      <div class="og-title"><span><span class="og-num">${String((i??0)+1).padStart(2,'0')}/${String(CATALOG.length).padStart(2,'0')}</span>${g.title}</span><span class="og-count">${g.pieces.length} ${g.pieces.length===1?'entrada':'entradas'}</span></div>
-      <p class="og-desc">${g.desc}</p>
-      <div class="items-grid">
-        ${g.pieces.map((p,i) => `
-          <div class="item-card reveal" style="--i:${i}" data-group="${g.id}" data-piece="${p.id}">
-            <div class="ic-thumb ${p.isLegacy ? 'origen' : 'resultado'}">
-              ${thumbOrPlaceholder(p)}
-              <span class="ic-badge ${p.isLegacy ? 'badge-legado' : 'badge-actual'}">${p.isLegacy ? 'ORIGEN' : 'RESULTADO'}</span>
+    <section class="og-row reveal" id="grp-${g.id}">
+      <div class="og-index">
+        <div class="og-bignum" aria-hidden="true">${num}</div>
+        <div class="og-index-body">
+          <div class="og-eyebrow">Frente ${num} / ${String(total).padStart(2,'0')}</div>
+          <h2 class="og-title">${g.title}</h2>
+          <p class="og-desc">${g.desc}</p>
+          <div class="og-count">${g.pieces.length} ${g.pieces.length===1?'entrada':'entradas'}</div>
+        </div>
+      </div>
+      <div class="og-strip-wrap">
+        <div class="og-strip">
+          ${g.pieces.map((p,pi) => `
+            <div class="item-card reveal" style="--i:${pi}" data-group="${g.id}" data-piece="${p.id}">
+              <div class="ic-thumb ${p.isLegacy ? 'origen' : 'resultado'}">
+                ${thumbOrPlaceholder(p)}
+                <span class="ic-badge ${p.isLegacy ? 'badge-legado' : 'badge-actual'}">${p.isLegacy ? 'ORIGEN' : 'RESULTADO'}</span>
+              </div>
+              <div class="ic-body">
+                <div class="ic-title">${p.title}</div>
+                <div class="ic-meta">${p.tag}</div>
+              </div>
             </div>
-            <div class="ic-body">
-              <div class="ic-title">${p.title}</div>
-              <div class="ic-meta">${p.tag}</div>
-            </div>
-          </div>
-        `).join('')}
+          `).join('')}
+        </div>
+        ${g.pieces.length > 3 ? `<div class="og-strip-hint">Desliza para ver más →</div>` : ''}
       </div>
     </section>
   `;

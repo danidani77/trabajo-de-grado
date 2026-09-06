@@ -9,7 +9,7 @@ function renderObras(){
       <p class="hh-body">Cada pieza incluye su documento o sitio de origen y, cuando aplica, el resultado final — abiertos directamente aquí, no solo en captura.</p>
     </section>
     <div class="obras-groups wrap">
-      ${CATALOG.map(renderGroup).join('')}
+      ${CATALOG.map((g,i)=>renderGroup(g,i)).join('')}
     </div>
   `;
   document.querySelectorAll('.item-card').forEach(card=>{
@@ -37,10 +37,10 @@ function thumbOrPlaceholder(piece){
   return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--tenue);font-size:13px;font-weight:600;">Ver sitio en vivo</div>`;
 }
 
-function renderGroup(g){
+function renderGroup(g, i){
   return `
     <section class="og-section reveal" id="grp-${g.id}">
-      <div class="og-title">${g.title}<span class="og-count">${g.pieces.length} ${g.pieces.length===1?'entrada':'entradas'}</span></div>
+      <div class="og-title"><span><span class="og-num">${String((i??0)+1).padStart(2,'0')}/${String(CATALOG.length).padStart(2,'0')}</span>${g.title}</span><span class="og-count">${g.pieces.length} ${g.pieces.length===1?'entrada':'entradas'}</span></div>
       <p class="og-desc">${g.desc}</p>
       <div class="items-grid">
         ${g.pieces.map((p,i) => `
@@ -88,6 +88,21 @@ function findComparePair(g, p){
     }
   }
   return null;
+}
+
+// Orden de presentación: un representante por cada uno de los "seis frentes"
+// ya establecidos en la entrada cinematográfica, para poder recorrerlos en
+// vivo con Anterior/Siguiente sin volver cada vez a la grilla del catálogo.
+const FRENTE_ORDER = [
+  {g:"en1", p:"en1-sistema"},
+  {g:"kit", p:"kit-julio"},
+  {g:"buk", p:"buk-salud"},
+  {g:"reconoce", p:"reconoce-actual"},
+  {g:"onboarding", p:"onboarding-web"},
+  {g:"mailings", p:"mailings-citaciones"},
+];
+function findFrenteIndex(groupId){
+  return FRENTE_ORDER.findIndex(f => f.g === groupId);
 }
 
 function openDossier(groupId, pieceId){
@@ -159,6 +174,18 @@ function openDossier(groupId, pieceId){
           </div>
         </div>
       ` : ''}
+
+      ${(()=>{ const fi = findFrenteIndex(groupId); if(fi<0) return ''; return `
+        <div class="frente-nav">
+          <div class="frente-count">Frente ${fi+1} / ${FRENTE_ORDER.length}</div>
+          <div class="frente-btns">
+            ${fi>0 ? `<button class="btn btn-line" id="frentePrev">← ${CATALOG.find(x=>x.id===FRENTE_ORDER[fi-1].g).title}</button>` : ''}
+            ${fi<FRENTE_ORDER.length-1
+              ? `<button class="btn btn-fill" id="frenteNext">${CATALOG.find(x=>x.id===FRENTE_ORDER[fi+1].g).title} →</button>`
+              : `<button class="btn btn-fill" id="frenteNext" data-end="1">Ver el manual técnico →</button>`}
+          </div>
+        </div>
+      `; })()}
     </div>
   `;
 
@@ -179,6 +206,27 @@ function openDossier(groupId, pieceId){
       renderViewerCustomFile(item.dataset.variantFile);
     });
   });
+
+  const fi = findFrenteIndex(groupId);
+  const frentePrev = document.getElementById('frentePrev');
+  const frenteNext = document.getElementById('frenteNext');
+  if(frentePrev){
+    frentePrev.addEventListener('click', ()=>{
+      const t = FRENTE_ORDER[fi-1];
+      openDossier(t.g, t.p);
+    });
+  }
+  if(frenteNext){
+    frenteNext.addEventListener('click', ()=>{
+      if(frenteNext.dataset.end){
+        closeDossier();
+        navigate('manual');
+        return;
+      }
+      const t = FRENTE_ORDER[fi+1];
+      openDossier(t.g, t.p);
+    });
+  }
 
   const rendered = {single:false, compare:false, slider:false};
   const modeTabs = document.getElementById('compareModeTabs');

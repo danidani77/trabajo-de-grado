@@ -81,9 +81,8 @@ function renderHome(){
   mainEl.innerHTML = `
     <section class="home-hero brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Trabajo de grado · Institución Universitaria Pascual Bravo</div>
-      <h1>Diseño gráfico potenciado con inteligencia artificial en Henkia.</h1>
-      <p class="hh-dek">Un registro del trabajo realizado durante mi práctica profesional: usar Claude para llevar procesos de comunicación de la compañía un paso más allá de lo que sus herramientas originales permitían.</p>
-      <p class="hh-body">Este archivo reúne el boletín interno, el material de liderazgo, el portal de consulta permanente, la producción audiovisual de reconocimiento y la guía de bienvenida — cada uno con su origen, su proceso y su resultado disponibles para revisión directa.</p>
+      <h1>El archivo, pieza por pieza.</h1>
+      <p class="hh-dek">Seis frentes de trabajo, cada uno con su versión original y su resultado en código — abiertos aquí para revisión directa, no solo en captura.</p>
       <div class="hh-row">
         <button class="btn btn-fill" onclick="navigate('obras')">Ver el catálogo →</button>
         <button class="btn btn-line" onclick="navigate('manual')">Ver el manual técnico</button>
@@ -103,8 +102,7 @@ function renderHome(){
       <div class="wrap intro-grid">
         <div class="intro-label">Sobre el<br>enfoque</div>
         <div class="intro-text reveal">
-          <p>El Boletín 3 en Uno, el Kit del Líder, los micrositios del portal BUK, Henkia [Rec]onoce y la Guía de Onboarding ya eran piezas de comunicación <strong>en uso activo</strong> dentro de la compañía, con un formato y un criterio editorial propios.</p>
-          <p>Lo que documenta este archivo es cómo, con Claude como herramienta de generación de código, cada una de esas piezas se llevó <strong>un paso más allá</strong> de lo que su formato original permitía — sin alterar el criterio editorial ya definido por los equipos responsables de cada contenido.</p>
+          <p>El Boletín 3 en Uno, el Kit del Líder, los micrositios del portal BUK, Henkia [Rec]onoce, la Guía de Onboarding y el Editor de Citaciones ya eran piezas de comunicación <strong>en uso activo</strong>, con un formato y un criterio editorial propios. Con Claude como herramienta de generación de código, cada una se llevó <strong>un paso más allá</strong> — sin alterar el criterio editorial ya definido por los equipos responsables.</p>
           <p><a href="#" onclick="navigate('obras'); return false;">Ver el catálogo completo, pieza por pieza →</a></p>
         </div>
       </div>

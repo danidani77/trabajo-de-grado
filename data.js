@@ -62,25 +62,22 @@ const GROUP_KIT = {
       facts:[["Formato","Imagen, una lámina"],["Navegación","Ninguna"],["Distribución","Correo corporativo"]],
     },
     {
-      id:"kit-julio", num:"02", title:"Julio — edición 03",
+      id:"kit-julio", num:"02", title:"Julio — Septiembre",
       tag:"Tres universos gráficos, animaciones, integraciones reales",
       thumb:"assets/thumbs/kit_julio.jpg",
       compareWith:"kit-marzo",
-      viewers:[{kind:"iframe-external", label:"Abrir sitio en vivo", url:"https://kitdelliderjulio.netlify.app/"}],
+      viewers:[
+        {kind:"iframe-external", label:"Julio", url:"https://kitdelliderjulio.netlify.app/"},
+        {kind:"html", label:"Septiembre", file:"assets/htmls/kit_lider_septiembre.html"},
+      ],
       facts:[["Concepto","Tres universos gráficos unidos por un sistema común"],["Integraciones","Humand, SharePoint"],["Animaciones","Título letra por letra, transición de logos"]],
       process:[
         "El copy y las prioridades ya venían definidos por Talento Humano — el trabajo fue de forma, jerarquía y experiencia, no de contenido.",
         "Un cursor personalizado dificultaba la navegación en trackpad: se restringió a dispositivos con mouse de precisión (pointer:fine).",
         "Las fuentes personalizadas no cargaban en la exportación de portadas estáticas: se incrustaron como base64 dentro del archivo.",
         "El indicador de sección activa fallaba durante el scroll: se corrigió el rootMargin del IntersectionObserver.",
+        "Para septiembre, ya bajo la identidad Henkia, el sistema se llevó a una nueva edición completa con contadores en vivo y video-manifiesto.",
       ]
-    },
-    {
-      id:"kit-septiembre", num:"03", title:"Septiembre — edición Henkia",
-      tag:"Ya bajo la nueva identidad de marca",
-      thumb:"assets/thumbs/kit_agosto.jpg",
-      viewers:[{kind:"html", label:"Ver sitio completo", file:"assets/htmls/kit_lider_septiembre.html"}],
-      facts:[["Marca","Henkia (transición desde ARUS)"],["Novedad","Contadores en vivo, video-manifiesto"],["Contexto","Coincide con el cambio de marca de la compañía"]],
     },
   ]
 };

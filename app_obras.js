@@ -240,6 +240,22 @@ function closeDossier(){
   document.body.style.overflow = '';
 }
 
+// Barra espaciadora reproduce/pausa ambos videos a la vez cuando el dossier
+// muestra dos videos (Paralelo o Slider) — p.ej. Henkia [Rec]onoce antes/después.
+document.addEventListener('keydown', (e)=>{
+  if(e.code !== 'Space') return;
+  const overlay = document.getElementById('dossierOverlay');
+  if(!overlay || !overlay.classList.contains('is-open')) return;
+  const tag = (e.target.tagName || '').toLowerCase();
+  if(tag==='button' || tag==='input' || tag==='textarea' || tag==='a') return;
+  const videos = Array.from(document.querySelectorAll('#compareView video, #sliderView video'))
+    .filter(v => v.offsetParent !== null);
+  if(videos.length < 2) return;
+  e.preventDefault();
+  const anyPaused = videos.some(v => v.paused);
+  videos.forEach(v => anyPaused ? v.play() : v.pause());
+});
+
 // Muchas piezas resultado (HTML reconstruido) tienen un ancho fijo mayor al panel
 // que las muestra, sobre todo en la vista de comparación. Esto escala el iframe
 // para que el contenido completo sea visible sin recortes ni scroll interno.

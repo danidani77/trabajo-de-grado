@@ -138,7 +138,6 @@ function openDossier(groupId, pieceId){
       <button class="dossier-close" onclick="closeDossier()">Cerrar ✕</button>
     </div>
     <div class="dossier-body">
-      <div class="dossier-hero" aria-hidden="true"></div>
       <div class="dossier-eyebrow">Pieza ${p.num}</div>
       <div class="dossier-title">${p.title}</div>
       ${p.tag ? `<p class="dossier-summary">${p.tag}</p>` : ''}

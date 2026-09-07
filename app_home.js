@@ -81,7 +81,7 @@ function renderHome(){
   mainEl.innerHTML = `
     <section class="home-hero brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Trabajo de grado · Institución Universitaria Pascual Bravo</div>
-      <h1>El trabajo, pieza por pieza.</h1>
+      <h1>Seis meses de diseño gráfico en Henkia.</h1>
       <p class="hh-dek">Seis proyectos de comunicación interna, cada uno con su versión original y su resultado en código — abiertos aquí para revisión directa.</p>
       <div class="hh-row">
         <button class="btn btn-fill" onclick="navigate('obras')">Ver el catálogo →</button>

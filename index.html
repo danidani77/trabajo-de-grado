@@ -154,7 +154,14 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
 .cr-title{font-family:var(--display); font-weight:700; font-size:22px;}
 .cr-tag{font-family:var(--body); font-size:12.5px; color:var(--tenue); margin-top:3px;}
 .cr-arrow{font-family:var(--display); font-size:22px; color:var(--senal);}
-.obras-head{padding-top:64px; padding-bottom:40px;}
+.obras-head{padding-top:110px; padding-bottom:64px;}
+.obras-head.brand-band::before{background-image:url('assets/img/hero_catalogo.jpg'); background-size:cover; background-position:center 38%; background-color:var(--verde-oscuro);}
+.obras-head.brand-band::after{
+  background:
+    linear-gradient(180deg, rgba(0,23,12,.5) 0%, rgba(0,23,12,.86) 72%, var(--verde-oscuro) 100%),
+    radial-gradient(600px 400px at 20% 30%, rgba(157,216,255,.14), transparent 70%),
+    radial-gradient(520px 420px at 85% 75%, rgba(9,177,123,.18), transparent 70%);
+}
 .obras-groups{padding-top:8px; padding-bottom:110px;}
 
 .og-jump{display:flex; flex-wrap:wrap; gap:8px; position:sticky; top:0; z-index:50;
@@ -279,6 +286,10 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
 .slide-compare .sc-handle:hover .sc-grip, .slide-compare .sc-handle:active .sc-grip{transform:scale(1.1);}
 .slide-compare .sc-hint{position:absolute; bottom:14px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.85); background:rgba(0,23,12,.55); padding:6px 14px; border-radius:20px; z-index:3; pointer-events:none; transition:opacity .3s;}
 @media (prefers-reduced-motion: reduce){.slide-compare .sc-grip{transition:none;}}
+.dossier-hero{width:100%; height:clamp(200px,28vw,300px); border-radius:18px; overflow:hidden; margin-bottom:36px;
+  background-image:linear-gradient(180deg, rgba(0,23,12,0) 45%, rgba(0,23,12,.65) 100%), url('assets/img/dossier_ia.jpg');
+  background-size:cover, cover; background-position:center, center 18%; background-repeat:no-repeat, no-repeat; background-color:var(--verde-oscuro);}
+@media(max-width:640px){.dossier-hero{height:180px; border-radius:12px; margin-bottom:26px;}}
 .dossier-eyebrow{font-family:var(--mono); font-size:12px; color:var(--senal); text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px;}
 .dossier-title{font-family:var(--display); font-weight:300; font-size:clamp(30px,4.4vw,52px); line-height:1.05; margin-bottom:22px;}
 .dossier-summary{font-size:16px; line-height:1.8; color:var(--tenue); max-width:780px; margin-bottom:40px;}

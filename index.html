@@ -384,7 +384,7 @@ p{text-wrap:pretty;}
 .autor-photo{max-width:360px; position:relative; margin-bottom:26px;}
 .autor-photo img{border-radius:12px; border:1px solid var(--linea-fuerte);}
 .autor-tag{position:absolute; bottom:-14px; left:-14px; background:var(--senal); color:#fff; font-family:var(--mono); font-size:10.5px; padding:9px 14px; border-radius:6px; font-weight:700;}
-.autor-body h2{font-family:var(--display); font-weight:700; font-size:clamp(26px,3.4vw,38px); margin-bottom:20px; line-height:1.08;}
+.autor-body h2{font-family:var(--display); font-weight:300; font-size:clamp(26px,3.4vw,38px); margin-bottom:20px; line-height:1.08;}
 .autor-body p{font-size:15px; line-height:1.7; color:var(--tenue); margin-bottom:16px; max-width:560px;}
 .site-footer{border-top:1px solid var(--linea); padding:32px 0; text-align:center;}
 .footer-row{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family:var(--mono); font-size:11px; color:var(--tenue-2);}
@@ -500,6 +500,13 @@ p{text-wrap:pretty;}
 #introStage .sound-toggle.is-on .icon-on{display:block;}
 #introStage .skip-intro{position:absolute; bottom:56px; right:28px; font-family:'Sora',sans-serif; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:rgba(234,248,242,.4); pointer-events:auto; transition:color .2s; background:none; border:none;}
 #introStage .skip-intro:hover{color:var(--intro-cielo);}
+@media(max-width:480px){
+  #introStage .kicker{font-size:10px; letter-spacing:.13em; white-space:normal; text-align:center; gap:8px;}
+  #introStage .kicker .bar{display:none;}
+  #introStage .hud-top, #introStage .hud-bottom{padding:16px 16px; font-size:9.5px;}
+  #introStage .skip-intro{bottom:50px; right:16px; font-size:9.5px;}
+  #introStage .sound-toggle{bottom:62px; right:16px; width:30px; height:30px;}
+}
 @media (prefers-reduced-motion: reduce){
   #introStage .rig{transition:none;}
   #introStage .mark, #introStage .front-card .fc-body, #introStage .front-card::before, #introStage .kicker .bar, #introStage .hud-cta.is-on, #introStage .hud-top span:last-child.pulse, #introStage .finale-plate{animation:none;}

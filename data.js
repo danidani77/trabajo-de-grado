@@ -238,7 +238,7 @@ const GROUP_MAILINGS = {
       tag:"Autogestión por área · HTML autocontenido",
       thumb:"assets/thumbs/mailings_citaciones.jpg",
       viewers:[{kind:"html", label:"Abrir editor", file:"assets/htmls/henkia_editor_citaciones.html"}],
-      facts:[["Objetivo","Generar tarjetas de citación a reuniones y comités, on-brand, sin pasar por diseño"],["Uso","Título, descripción, lugar, contacto y logo del área o programa"],["Formato","HTML autocontenido (~6.9MB, fuentes e imágenes embebidas)"]],
+      facts:[["Objetivo","Generar tarjetas de citación a reuniones y comités, on-brand, sin pasar por diseño"],["Uso","Título, descripción, lugar, contacto y logo del área o programa"],["Formato","HTML autocontenido (~6.1MB, fuentes e imágenes embebidas)"]],
     },
   ]
 };

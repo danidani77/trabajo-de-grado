@@ -6,7 +6,7 @@
 <title>Daniel Fabra · Trabajo de grado</title>
 <link rel="icon" type="image/svg+xml" href="assets/brand/isotipo_henkia.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@500;600;700;800;900&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300;500;600;700;800;900&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --fondo:#ffffff;
@@ -406,6 +406,9 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
   perspective:1200px; perspective-origin:50% 50%;
   transition:background .6s ease-out;
 }
+#introStage .stage-photos{position:absolute; inset:0; z-index:0;}
+#introStage .stage-photo{position:absolute; inset:0; background-size:cover; background-position:center 42%; opacity:0; will-change:opacity;}
+#introStage .stage-photo::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,23,12,.5) 0%, rgba(0,23,12,.86) 100%);}
 #introStage .grain{position:absolute; inset:-10%; opacity:.05; pointer-events:none;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
 #introStage .stars{position:absolute; inset:-8%; pointer-events:none; transition:transform .3s ease-out;}
@@ -421,18 +424,22 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
 #introStage .mark{width:min(46vw,20vh,360px); height:min(46vw,20vh,360px); animation:introBreathe 6s ease-in-out infinite;}
 #introStage .mark svg{width:100%; height:100%; display:block; filter:drop-shadow(0 0 40px rgba(9,177,123,.55));}
 @keyframes introBreathe{0%,100%{transform:scale(1) rotate(0deg); filter:drop-shadow(0 0 34px rgba(9,177,123,.45));} 50%{transform:scale(1.045) rotate(1.2deg); filter:drop-shadow(0 0 54px rgba(181,253,255,.5));}}
-#introStage h1.beat{font-family:'Darker Grotesque',sans-serif; font-weight:800; line-height:.94; letter-spacing:-.01em;
+#introStage h1.beat{font-family:'Darker Grotesque',sans-serif; font-weight:300; line-height:.94; letter-spacing:-.01em;
   font-size:clamp(26px, min(6.5vw,6.2vh), 100px); text-align:center; text-wrap:balance; max-width:16ch; white-space:normal;}
 #introStage .beat em{font-style:normal; color:var(--intro-cielo);}
 #introStage .dek{font-family:'Sora',sans-serif; font-weight:300; font-size:clamp(13px, min(1.8vw,1.9vh), 20px); color:var(--intro-text-dim); text-align:center; max-width:34ch; line-height:1.45;}
 #introStage .plate-label{font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--intro-verde-medio);}
-#introStage .front-card{width:min(72vw,320px); padding:26px 26px 24px; background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+#introStage .intro-grafismo{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(150vw,980px); height:auto; opacity:.09; pointer-events:none; z-index:-1;}
+#introStage .intro-grafismo path{fill:none; stroke:var(--intro-cielo-medio); stroke-width:1;}
+#introStage .front-card{width:min(72vw,320px); padding:0; background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
   border-top:2px solid var(--intro-verde-medio); backdrop-filter:blur(2px); overflow:hidden;}
-#introStage .front-card::before{content:""; position:absolute; top:0; left:-40%; width:40%; height:2px; background:linear-gradient(90deg, transparent, var(--intro-cielo), transparent); animation:introSheen 3.6s ease-in-out infinite;}
-#introStage .front-card .fc-body{animation:introFloat 4.5s ease-in-out infinite;}
+#introStage .front-card::before{content:""; position:absolute; top:0; left:-40%; width:40%; height:2px; background:linear-gradient(90deg, transparent, var(--intro-cielo), transparent); animation:introSheen 3.6s ease-in-out infinite; z-index:2;}
+#introStage .front-card .fc-thumb{width:100%; height:130px; background-size:cover; background-position:center top; position:relative;}
+#introStage .front-card .fc-thumb::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,23,12,.1) 30%, rgba(0,23,12,.9) 100%);}
+#introStage .front-card .fc-body{padding:18px 26px 24px; animation:introFloat 4.5s ease-in-out infinite;}
 @keyframes introFloat{0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);}}
 @keyframes introSheen{0%{left:-40%;} 100%{left:110%;}}
-#introStage .front-card .fc-icon{width:38px; height:38px; margin-bottom:18px; color:var(--intro-cielo);}
+#introStage .front-card .fc-icon{width:32px; height:32px; margin-bottom:14px; color:var(--intro-cielo);}
 #introStage .front-card .fc-icon svg{width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:1.4;}
 #introStage .front-card .fc-num{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--intro-text-dim); letter-spacing:.1em; margin-bottom:6px;}
 #introStage .front-card .fc-name{font-family:'Darker Grotesque',sans-serif; font-weight:700; font-size:28px; line-height:1.05; margin-bottom:8px;}
@@ -491,6 +498,10 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
 <body>
 <div id="introStage" style="transition:opacity .45s ease;">
 <div class="stage" id="stage">
+  <div class="stage-photos" id="stagePhotos" aria-hidden="true">
+    <div class="stage-photo" data-z="10700" data-range="2600" style="background-image:url('assets/img/catalogo_ia.jpg')"></div>
+    <div class="stage-photo" data-z="11800" data-range="1600" data-hold="1" style="background-image:url('assets/img/manual_oficina.jpg')"></div>
+  </div>
   <div class="grain"></div>
   <div class="stars" id="stars"></div>
   <div class="rig" id="rig">
@@ -518,6 +529,11 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
     <!-- ESCENA 2 — CONCEPTO -->
     <div class="obj" data-z="1560" data-x="0" data-y="0">
       <div class="scene-block">
+        <svg class="intro-grafismo" viewBox="0 0 481.14 412.23" aria-hidden="true">
+          <path d="M240.14,242.21c79.08.09,157.87,67.79,187.5,142.18,5.54,13.92-5.56,27.84-20.54,27.84h-102.66s12.86-157.83-64.37-157.94c-77.23.11-64.37,157.94-64.37,157.94h-102.66c-14.98,0-26.08-13.92-20.54-27.84,29.62-74.39,108.42-142.09,187.5-142.18h.15Z"/>
+          <path d="M481.14,319.83h-14.64c-.26-.39-35.45-104.84-225.93-104.58-190.34.26-225.79,104.23-225.93,104.58H0V94.19h14.64c.04.11,35.36,104.84,225.93,104.58,190.59-.26,225.73-104.31,225.93-104.58h14.64v225.63Z"/>
+          <path d="M175.69,0s-12.86,157.83,64.37,157.94c77.23-.11,64.37-157.94,64.37-157.94h102.66c14.98,0,26.08,13.92,20.54,27.84-29.62,74.39-108.42,142.09-187.5,142.18h-.15c-79.08-.09-157.87-67.79-187.5-142.18C46.95,13.92,58.05,0,73.03,0h102.66Z"/>
+        </svg>
         <div class="plate-label">· Escena 02 · El enfoque</div>
         <h1 class="beat">Piezas que <em>ya</em><br>funcionaban.</h1>
         <p class="dek">Boletín, Kit del Líder, portal BUK, Henkia [Rec]onoce, Onboarding y el Editor de Citaciones — seis procesos, llevados un paso más allá con Claude.</p>
@@ -526,6 +542,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
     <!-- ESCENA 4 — FRENTES -->
     <div class="obj" data-z="5000" data-x="0" data-y="-360"><div class="plate-label">· Escena 04 · Seis proyectos</div></div>
     <div class="obj front-card" data-z="5300" data-x="0" data-y="0">
+      <div class="fc-thumb" style="background-image:url('assets/thumbs/en1_sistema.jpg')"></div>
       <div class="fc-body" style="animation-delay:0s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div>
         <div class="fc-num">01/06</div>
@@ -534,6 +551,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
       </div>
     </div>
     <div class="obj front-card" data-z="6200" data-x="0" data-y="0">
+      <div class="fc-thumb" style="background-image:url('assets/thumbs/kit_julio.jpg')"></div>
       <div class="fc-body" style="animation-delay:-.7s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M12 2 3 7v10l9 5 9-5V7z"/></svg></div>
         <div class="fc-num">02/06</div>
@@ -542,6 +560,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
       </div>
     </div>
     <div class="obj front-card" data-z="7100" data-x="0" data-y="0">
+      <div class="fc-thumb" style="background-image:url('assets/thumbs/buk_salud.jpg')"></div>
       <div class="fc-body" style="animation-delay:-1.4s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="1"/><path d="M8 21h8M12 18v3"/></svg></div>
         <div class="fc-num">03/06</div>
@@ -550,6 +569,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
       </div>
     </div>
     <div class="obj front-card" data-z="8000" data-x="0" data-y="0">
+      <div class="fc-thumb" style="background-image:url('assets/thumbs/reconoce_actual.jpg')"></div>
       <div class="fc-body" style="animation-delay:-2.1s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M12 21c-4-3-8-6-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 5-4 8-8 11z"/></svg></div>
         <div class="fc-num">04/06</div>
@@ -558,6 +578,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
       </div>
     </div>
     <div class="obj front-card" data-z="8900" data-x="0" data-y="0">
+      <div class="fc-thumb" style="background-image:url('assets/thumbs/onboarding_web.jpg')"></div>
       <div class="fc-body" style="animation-delay:-2.8s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5 21c1-4 4-6 7-6s6 2 7 6"/></svg></div>
         <div class="fc-num">05/06</div>
@@ -566,6 +587,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
       </div>
     </div>
     <div class="obj front-card" data-z="9800" data-x="0" data-y="0">
+      <div class="fc-thumb" style="background-image:url('assets/thumbs/mailings_citaciones.jpg')"></div>
       <div class="fc-body" style="animation-delay:-3.5s">
         <div class="fc-icon"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg></div>
         <div class="fc-num">06/06</div>
@@ -626,6 +648,7 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
   const rig = document.getElementById('rig');
   const stars = document.getElementById('stars');
   const objs = Array.from(document.querySelectorAll('#introStage .obj'));
+  const stagePhotos = Array.from(document.querySelectorAll('#introStage .stage-photo'));
   const railDot = document.getElementById('railDot');
   const depthLabel = document.getElementById('depthLabel');
   const sceneLabel = document.getElementById('sceneLabel');
@@ -750,6 +773,12 @@ a:focus-visible, button:focus-visible{outline:2px solid var(--cielo-medio); outl
       else if(rel>=260 && rel<620) op=1-(rel-260)/360;
       el.style.opacity = Math.max(0,Math.min(1,op)).toFixed(3);
       el.style.transform = `translate(-50%,-50%) translate3d(${ox}px, ${oy}px, ${rel}px) rotate(${rot}deg)`;
+    }
+    for(const ph of stagePhotos){
+      const center=+ph.dataset.z, range=+ph.dataset.range;
+      let op = 1 - Math.abs(z-center)/range;
+      if(ph.dataset.hold && z>=center) op = 1;
+      ph.style.opacity = Math.max(0,Math.min(1,op)).toFixed(3);
     }
     railDot.style.top = (logicalProgress*100)+'%';
     depthLabel.textContent = 'Z ' + String(Math.round(z)).padStart(4,'0');

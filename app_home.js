@@ -81,8 +81,8 @@ function renderHome(){
   mainEl.innerHTML = `
     <section class="home-hero brand-band wrap">
       <div class="hh-kicker"><span class="dot"></span>Trabajo de grado · Institución Universitaria Pascual Bravo</div>
-      <h1>El archivo, pieza por pieza.</h1>
-      <p class="hh-dek">Seis frentes de trabajo, cada uno con su versión original y su resultado en código — abiertos aquí para revisión directa.</p>
+      <h1>El trabajo, pieza por pieza.</h1>
+      <p class="hh-dek">Seis proyectos de comunicación interna, cada uno con su versión original y su resultado en código — abiertos aquí para revisión directa.</p>
       <div class="hh-row">
         <button class="btn btn-fill" onclick="navigate('obras')">Ver el catálogo →</button>
         <button class="btn btn-line" onclick="navigate('manual')">Ver el manual técnico</button>
@@ -90,7 +90,7 @@ function renderHome(){
 
       <div class="colofon">
         <div class="colofon-grid">
-          <div><div class="cf-n"><span data-count="${CATALOG.length}">0</span></div><div class="cf-l">Frentes de trabajo</div></div>
+          <div><div class="cf-n"><span data-count="${CATALOG.length}">0</span></div><div class="cf-l">Proyectos</div></div>
           <div><div class="cf-n">ARUS → Henkia</div><div class="cf-l">Marzo – Agosto 2026</div></div>
           <div><div class="cf-n"><span data-count="6">0</span> meses</div><div class="cf-l">Duración de la práctica</div></div>
           <div><div class="cf-n">Pascual Bravo</div><div class="cf-l">Diseño Gráfico</div></div>
@@ -111,7 +111,7 @@ function renderHome(){
     <section class="cat-preview">
       <div class="wrap">
         <div class="cp-head">
-          <div class="cp-title">Los frentes de trabajo</div>
+          <div class="cp-title">Los proyectos</div>
         </div>
         <div class="cat-list">
           ${CATALOG.map((g,i) => `
@@ -119,7 +119,7 @@ function renderHome(){
               <div class="cr-num">${String(i+1).padStart(2,'0')}</div>
               <div>
                 <div class="cr-title">${g.title}</div>
-                <div class="cr-tag">${g.pieces.length} ${g.pieces.length === 1 ? 'entrada' : 'entradas'} documentadas</div>
+                <div class="cr-tag">${g.pieces.length} ${g.pieces.length === 1 ? 'pieza' : 'piezas'} documentadas</div>
               </div>
               <div class="cr-arrow">→</div>
             </div>

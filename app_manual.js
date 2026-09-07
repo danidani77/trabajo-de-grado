@@ -127,7 +127,7 @@ function renderAutor(){
         <div class="autor-body reveal">
           <div class="eyebrow">Sobre este trabajo</div>
           <h2>Daniel Stiven Fabra Rodríguez</h2>
-          <p>Practicante de Diseño Gráfico de la Institución Universitaria Pascual Bravo, en Henkia (antes ARUS). Este archivo documenta el trabajo desarrollado durante mi práctica profesional: potenciar, con Claude, procesos de comunicación interna que la compañía ya tenía en marcha.</p>
+          <p>Practicante de Diseño Gráfico de la Institución Universitaria Pascual Bravo, en Henkia (antes ARUS). Este sitio documenta el trabajo desarrollado durante mi práctica profesional: potenciar, con Claude, procesos de comunicación interna que la compañía ya tenía en marcha.</p>
           <p>Cada pieza reunida aquí partió de algo que ya funcionaba — el objetivo nunca fue reemplazar el criterio del equipo, sino darle más alcance con menos fricción técnica.</p>
           <div class="hh-row" style="margin-top:32px;">
             <button class="btn btn-fill" onclick="navigate('obras')">Ver el catálogo ↓</button>

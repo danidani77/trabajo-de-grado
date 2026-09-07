@@ -8,7 +8,7 @@ function renderObras(){
       <h1 style="font-family:var(--display); font-weight:300; font-size:clamp(30px,4.5vw,48px); line-height:1.08; max-width:820px;">Catálogo de piezas.</h1>
       <p class="hh-body">Cada pieza incluye su documento o sitio de origen y, cuando aplica, el resultado final, abiertos directamente aquí.</p>
     </section>
-    <nav class="og-jump wrap" aria-label="Ir a un frente de trabajo">
+    <nav class="og-jump wrap" aria-label="Ir a un proyecto">
       ${CATALOG.map((g,i)=>`<button class="og-jump-btn" data-jump="${g.id}"><span class="og-jump-num">${String(i+1).padStart(2,'0')}</span>${g.title}</button>`).join('')}
     </nav>
     <div class="obras-groups wrap">
@@ -51,10 +51,10 @@ function renderGroup(g, i){
       <div class="og-index">
         <div class="og-bignum" aria-hidden="true">${num}</div>
         <div class="og-index-body">
-          <div class="og-eyebrow">Frente ${num} / ${String(total).padStart(2,'0')}</div>
+          <div class="og-eyebrow">Proyecto ${num} / ${String(total).padStart(2,'0')}</div>
           <h2 class="og-title">${g.title}</h2>
           <p class="og-desc">${g.desc}</p>
-          <div class="og-count">${g.pieces.length} ${g.pieces.length===1?'entrada':'entradas'}</div>
+          <div class="og-count">${g.pieces.length} ${g.pieces.length===1?'pieza':'piezas'}</div>
         </div>
       </div>
       <div class="og-strip-wrap">
@@ -195,7 +195,7 @@ function openDossier(groupId, pieceId){
 
       ${(()=>{ const fi = findFrenteIndex(groupId); if(fi<0) return ''; return `
         <div class="frente-nav">
-          <div class="frente-count">Frente ${fi+1} / ${FRENTE_ORDER.length}</div>
+          <div class="frente-count">Proyecto ${fi+1} / ${FRENTE_ORDER.length}</div>
           <div class="frente-btns">
             ${fi>0 ? `<button class="btn btn-line" id="frentePrev">← ${CATALOG.find(x=>x.id===FRENTE_ORDER[fi-1].g).title}</button>` : ''}
             ${fi<FRENTE_ORDER.length-1
